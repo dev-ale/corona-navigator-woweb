@@ -6,8 +6,6 @@
         dark
         flat
     >
-
-
       <v-spacer></v-spacer>
 
       <v-app-bar-title><h2>Corona Navigator</h2></v-app-bar-title>
@@ -24,9 +22,9 @@
 
       <template v-slot:extension>
         <v-tabs align-with-title>
-          <v-tab>Zug</v-tab>
-          <v-tab>Auto</v-tab>
-          <v-tab>Status</v-tab>
+          <v-tab @click="view='zug'">Zug</v-tab>
+          <v-tab @click="view='auto'">Auto</v-tab>
+          <v-tab @click="view='status'">Status</v-tab>
         </v-tabs>
       </template>
     </v-app-bar>
@@ -34,7 +32,9 @@
     <v-main style="background-color: #c44348">
       <div class="ma-12" >
         <v-card height="700">
-
+          <Zug v-if="view==='zug'"/>
+          <Auto v-if="view==='auto'"/>
+          <Status v-if="view==='status'"/>
         </v-card>
 
       </div>
@@ -45,11 +45,18 @@
 
 <script>
 
+import Zug from "@/components/Zug";
+import Status from "@/components/Status";
+import Auto from "@/components/Auto";
 export default {
   name: 'App',
   components: {
+    Auto,
+    Status,
+    Zug
   },
   data: () => ({
+    view: "zug",
     incidences: [{
       timeStamp: "timestamp",
       name: "Basel",
@@ -57,13 +64,13 @@ export default {
       date: "2021-04-19",
       incident: "272",
     },
-      {
-        timeStamp: "timestamp",
-        name: "Aesch",
-        canton: "BL",
-        date: "2021-04-19",
-        incident: "201",
-      }]
+    {
+      timeStamp: "timestamp",
+      name: "Aesch",
+      canton: "BL",
+      date: "2021-04-19",
+      incident: "201",
+    }]
   }),
 };
 </script>
