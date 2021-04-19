@@ -4,58 +4,41 @@
         app
         color="primary"
         dark
+        flat
     >
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
 
       <v-spacer></v-spacer>
 
-      <div class="d-flex align-center">
-        <h2>Corona-Navigator</h2>
-      </div>
+      <v-app-bar-title><h2>Corona Navigator</h2></v-app-bar-title>
 
       <v-spacer></v-spacer>
 
-      <v-btn
-          href="https://gitlab.fhnw.ch/wodss-wowm-group-bs-bl/webservice-bl-bs"
-          target="_blank"
-          text
-      >
-        <span class="mr-2">GitLab</span>
-        <v-icon>mdi-gitlab</v-icon>
+      <v-btn icon>
+        <v-icon>mdi-github</v-icon>
       </v-btn>
+
+      <v-btn icon>
+        <v-icon>mdi-dots-vertical</v-icon>
+      </v-btn>
+
+      <template v-slot:extension>
+        <v-tabs align-with-title>
+          <v-tab>Zug</v-tab>
+          <v-tab>Auto</v-tab>
+          <v-tab>Status</v-tab>
+        </v-tabs>
+      </template>
     </v-app-bar>
 
-    <v-main>
-      <v-container>
-        <v-row justify="center">
-          <v-col align=" center" cols="6">
-            <v-card
-                max-width="475"
-                class="mx-auto"
-            >
-              <v-toolbar
-                  color="teal"
-                  dark
-              >
-                <v-spacer></v-spacer>
-                <v-toolbar-title>sampledata</v-toolbar-title>
-                <v-spacer></v-spacer>
-              </v-toolbar>
-              <v-list dense v-for="incidence of incidences " :key="incidence.incident">
-                <v-list-item>
-                  <v-list-item-title>
-                    <h2>{{ incidence.name }}</h2>
-                  </v-list-item-title>
-                  <v-list-item-subtitle>
-                    <v-chip color="teal" dark>{{ incidence.incident }}</v-chip>
-                  </v-list-item-subtitle>
-                </v-list-item>
-              </v-list>
-            </v-card>
-          </v-col>
-        </v-row>
+    <v-main style="background-color: #c44348">
+      <div class="ma-12" >
+        <v-card height="700">
 
-      </v-container>
+        </v-card>
+
+      </div>
+
     </v-main>
   </v-app>
 </template>
