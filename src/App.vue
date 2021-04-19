@@ -41,7 +41,7 @@
                 <v-toolbar-title>sampledata</v-toolbar-title>
                 <v-spacer></v-spacer>
               </v-toolbar>
-              <v-list dense v-for="incidence of incidences">
+              <v-list dense v-for="incidence of incidences " :key="incidence.incident">
                 <v-list-item>
                   <v-list-item-title>
                     <h2>{{ incidence.name }}</h2>

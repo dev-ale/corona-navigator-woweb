@@ -2,7 +2,7 @@
   "name": "corona-navigator",
   "version": "0.1.0",
   "engines": {
-    "node": "14.x"
+    "node": "12.x"
   },
   "private": true,
   "scripts": {
@@ -12,7 +12,6 @@
     "postinstall": "yarn build"
   },
   "dependencies": {
-    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "dotenv": "^8.2.0",
     "path": "^0.12.7",
