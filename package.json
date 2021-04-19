@@ -1,9 +1,11 @@
 {
   "name": "corona-navigator",
   "version": "0.1.0",
+  "engines": {
+    "node": "12.x"
+  },
   "private": true,
   "scripts": {
-    "heroku-prebuild": "cd client && yarn build",
-    "start": "cd && "
+    "heroku-prebuild": "cd client && yarn build"
   }
 }
