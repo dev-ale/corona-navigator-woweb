@@ -1,0 +1,9 @@
+{
+  "name": "corona-navigator",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "heroku-prebuild": "cd client && yarn build",
+    "start": "cd && "
+  }
+}
