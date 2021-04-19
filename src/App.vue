@@ -32,9 +32,9 @@
     <v-main style="background-color: #c44348">
       <div class="ma-12" >
         <v-card height="700">
-          <Zug v-if="view==='zug'"/>
-          <Auto v-if="view==='auto'"/>
-          <Status v-if="view==='status'"/>
+          <Zug v-if="view==='zug'" :incidences="incidences"/>
+          <Auto v-if="view==='auto'" :incidences="incidences"/>
+          <Status v-if="view==='status'" :incidences="incidences"/>
         </v-card>
 
       </div>
@@ -70,6 +70,20 @@ export default {
       canton: "BL",
       date: "2021-04-19",
       incident: "201",
+    },
+    {
+      timeStamp: "timestamp",
+      name: "Pratteln",
+      canton: "BL",
+      date: "2021-04-19",
+      incident: "178",
+    },
+    {
+      timeStamp: "timestamp",
+      name: "Solothurn",
+      canton: "SO",
+      date: "2021-04-19",
+      incident: "401",
     }]
   }),
 };
