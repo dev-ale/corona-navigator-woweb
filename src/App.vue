@@ -12,7 +12,11 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
+      <v-btn
+          icon
+          href="https://github.com/dev-ale/corona-navigator-woweb"
+          target="_blank"
+      >
         <v-icon>mdi-github</v-icon>
       </v-btn>
 
@@ -60,28 +64,30 @@ export default {
   data: () => ({
     view: "zug",
     incidences: [{
-      timeStamp: "timestamp",
       name: "Basel",
       canton: "BS",
       date: "2021-04-19",
       incident: 272,
     },
     {
-      timeStamp: "timestamp",
+      name: "Muttenz",
+      canton: "BS",
+      date: "2021-04-19",
+      incident: 222,
+    },
+    {
       name: "Aesch",
       canton: "BL",
       date: "2021-04-19",
       incident: 201,
     },
     {
-      timeStamp: "timestamp",
       name: "Pratteln",
       canton: "BL",
       date: "2021-04-19",
-      incident: 178.75,
+      incident: 215,
     },
     {
-      timeStamp: "timestamp",
       name: "Solothurn",
       canton: "SO",
       date: "2021-04-19",

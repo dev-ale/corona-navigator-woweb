@@ -1,43 +1,20 @@
 <template>
   <div>
-    <v-col align="center">
-      <v-row>
-        <v-col cols="5">
-          <v-text-field solo clearable v-model="from" placeholder="von"></v-text-field>
-        </v-col>
-        <v-col cols="5">
-          <v-text-field solo clearable v-model="to" placeholder="bis"></v-text-field>
-        </v-col>
-        <v-col cols="2" align="left">
-          <v-btn @click="search" width="100%" color="primary" dark x-large>Suchen</v-btn>
-        </v-col>
-      </v-row>
-    </v-col>
-
-    <v-row>
-      <v-col cols="4">
-        <v-list dense v-for="station of stations" :key="station.name">
-          <v-list-item>
-            <v-list-item-title>
-              <h2>{{ station.name }}</h2>
-            </v-list-item-title>
-            <v-list-item-subtitle>
-              <v-chip v-if="!isNaN(station.incident)"color="primary" dark>{{ station.incident }}</v-chip>
-              <v-chip v-if="isNaN(station.incident)" outlined color="primary" dark>{{ station.incident }}</v-chip>
-            </v-list-item-subtitle>
-          </v-list-item>
-        </v-list>
-      </v-col>
-    </v-row>
+    <ZugInput @search="search"/>
+    <ZugStations v-if="!loading" :stations="stations"/>
     <Score v-if="stations" :stations="stations"/>
+    <ProgressLoader v-if="loading"/>
   </div>
 </template>
 
 <script>
 import Score from "@/components/Score";
+import ProgressLoader from "@/components/ProgressLoader";
+import ZugStations from "@/components/Zug-Stations";
+import ZugInput from "@/components/Zug-Input";
 export default {
   name: "Zug",
-  components: {Score},
+  components: {ZugInput, ZugStations, ProgressLoader, Score},
   props: {
     incidences: Array,
   },
@@ -50,7 +27,7 @@ export default {
 
   }),
   mounted() {
-    incidences: this.incidences
+
   },
 
   methods: {
@@ -67,10 +44,10 @@ export default {
 
     },
     // Transport Opendata API Call
-    search() {
+    search(from,to) {
       this.loading = true
       var self = this
-      axios.get(`https://transport.opendata.ch/v1/connections?from=${this.from}&to=${this.to}&limit=1`)
+      axios.get(`https://transport.opendata.ch/v1/connections?from=${from}&to=${to}&limit=1`)
           .then(response => {
             console.log(response)
             let sections = [];
@@ -121,7 +98,6 @@ export default {
             // Drop duplicates
             this.stations = [...new Set(stations)];
             //this.stations = stations
-
             this.loading = false
           })
           .catch(e => {
