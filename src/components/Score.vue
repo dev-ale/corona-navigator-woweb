@@ -10,6 +10,11 @@ export default {
   props: {
     stations: Array,
   },
+  watch: {
+    stations: function (newVal, oldVal) { // watch it
+      this.calculateScore();
+    }
+  },
   data: () => ({
     score: null
 
