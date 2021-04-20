@@ -6,3 +6,4 @@ babel.config.js
 vue.config.js
 yarn-error.log
 yarn.lock
+/dist/

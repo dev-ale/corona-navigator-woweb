@@ -22,28 +22,31 @@
               <h2>{{ station.name }}</h2>
             </v-list-item-title>
             <v-list-item-subtitle>
-              <v-chip color="primary" dark>{{ station.incident }}</v-chip>
+              <v-chip v-if="!isNaN(station.incident)"color="primary" dark>{{ station.incident }}</v-chip>
+              <v-chip v-if="isNaN(station.incident)" outlined color="primary" dark>{{ station.incident }}</v-chip>
             </v-list-item-subtitle>
           </v-list-item>
         </v-list>
       </v-col>
     </v-row>
+    <Score v-if="stations" :stations="stations"/>
   </div>
-
-
 </template>
 
 <script>
+import Score from "@/components/Score";
 export default {
   name: "Zug",
+  components: {Score},
   props: {
     incidences: Array,
   },
   data: () => ({
-    from: "Gelterkinden",
-    to: "kleinlützel",
+    from: "Pratteln",
+    to: "Basel",
     loading: false,
-    stations: null
+    stations: null,
+    score: null
 
   }),
   mounted() {
@@ -59,7 +62,7 @@ export default {
         const city = this.incidences.find(it => it.name === name);
         return (city.incident)
       }else {
-        return 99999
+        return "Keine Daten verfügbar"
       }
 
     },
@@ -116,9 +119,8 @@ export default {
               }
             });
             // Drop duplicates
-            //this.stationen = [...new Set(stations)];
-            this.stations = stations
-            console.log(this.stations)
+            this.stations = [...new Set(stations)];
+            //this.stations = stations
 
             this.loading = false
           })
