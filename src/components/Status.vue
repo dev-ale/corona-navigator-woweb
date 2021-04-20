@@ -18,11 +18,12 @@ export default {
   },
   data: () => {
     return {
-      incidences: this.incidences
+
     }
 
   },
   mounted() {
+    incidences: this.incidences
     this.getCantons();
   },
   methods: {
