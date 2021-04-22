@@ -125,6 +125,8 @@ def get_incidences_from_canton_services():
     data = json.loads(json_data)
     dict['FR'] = data
 
+    return dict
+
 def get_municipalities_from_canton_services():
     dict = {}
 
@@ -224,8 +226,10 @@ def get_municipalities_from_canton_services():
     data = json.loads(json_data)
     dict['FR'] = data
 
-    print(dict)
+    return dict
 
 if __name__ == '__main__':
-    get_incidences_from_canton_services()
-    get_municipalities_from_canton_services()
+    dict = {}
+    dict['incidences'] = get_incidences_from_canton_services()
+    dict['municipalities'] = get_municipalities_from_canton_services()    
+    return dict
