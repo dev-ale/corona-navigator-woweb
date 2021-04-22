@@ -12,6 +12,7 @@ import certifi
 YESTERDAY = 1
 
 def getDataFromWhatEver():
+
     dict = {}
     dateTo = date.today()
     dateFrom = dateTo
@@ -112,6 +113,17 @@ def getDataFromWhatEver():
     json_data = r.data.decode('utf-8')
     data = json.loads(json_data)
     dict['SG'] = data
+    
+    #get data from FR (this seems not to work due to errors in the certificate)
+    url_fr = parser.get("config", "fr_incidences")
+    url_fr += "/?dateFrom=" + str(dateFrom) + "&dateTo=" + str(dateTo)
+    http = urllib3.PoolManager( cert_reqs = 'CERT_NONE',
+                                ca_certs="./certificates/certificate_fr.cer",
+                                assert_hostname=False) #this is needed so no SSL Error is thrown
+    r = http.request('GET', url_fr)
+    json_data = r.data.decode('utf-8')
+    data = json.loads(json_data)
+    dict['FR'] = data
 
     print(dict)
 
