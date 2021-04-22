@@ -232,4 +232,3 @@ if __name__ == '__main__':
     dict = {}
     dict['incidences'] = get_incidences_from_canton_services()
     dict['municipalities'] = get_municipalities_from_canton_services()    
-    return dict
