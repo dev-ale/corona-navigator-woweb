@@ -35,7 +35,7 @@
 
     <v-main style="background-color: #c44348">
       <div class="ma-12" >
-        <v-card height="100%">
+        <v-card min-height="500px" height="100%">
           <v-card-text>
             <Zug v-if="view==='zug'" :incidences="incidences"/>
             <Auto v-if="view==='auto'" :incidences="incidences"/>
