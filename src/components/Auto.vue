@@ -4,10 +4,15 @@
     <div>
       <v-col align="center">
         <v-row>
-          <v-col cols="5">
+          <v-col cols="3">
             <v-text-field solo clearable v-model="start" placeholder="von"></v-text-field>
           </v-col>
-          <v-col cols="5">
+
+          <v-col cols="3">
+            <v-text-field solo clearable v-model="stoppoint" placeholder="pause"></v-text-field>
+          </v-col>
+
+          <v-col cols="3">
             <v-text-field solo clearable v-model="end" placeholder="bis"></v-text-field>
           </v-col>
           <v-col cols="2" align="left">
@@ -20,7 +25,7 @@
           :zoom="7"
           :center="{ lat: 46.8131873 , lng: 8.22421 }
       ">
-        <DirectionsRenderer travelMode="DRIVING" :origin="origin" :destination="destionation"/>
+        <DirectionsRenderer travelMode="DRIVING" :origin="origin" :destination="destionation" :location="location"/>
       </GmapMap>
     </div>
   </v-container>
@@ -37,7 +42,8 @@ export default {
 
   data: () => ({
     start: "",
-    end: ""
+    end: "",
+    stoppoint: "",
   }),
 
   computed: {
@@ -48,6 +54,15 @@ export default {
     destionation() {
       if (!this.end) return null;
       return {query: this.end};
+    },
+    location() {
+      if (!this.stoppoint) return null;
+      return this.stoppoint;
+    }
+  },
+  methods: {
+    search(){
+
     }
   }
 };
