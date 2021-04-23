@@ -4,25 +4,25 @@
     <div>
       <v-col align="center">
         <v-row>
-          <v-col cols="3">
+          <v-col sm="4" xs="4" md="3" cols="12">
             <v-text-field solo clearable v-model="start" placeholder="von"></v-text-field>
           </v-col>
 
-          <v-col cols="3">
+          <v-col sm="4" xs="4" md="3" cols="12">
             <v-text-field solo clearable v-model="stoppoint" placeholder="pause"></v-text-field>
           </v-col>
 
-          <v-col cols="3">
+          <v-col sm="4" xs="4" md="3" cols="12">
             <v-text-field solo clearable v-model="end" placeholder="bis"></v-text-field>
           </v-col>
-          <v-col cols="2" align="left">
+          <v-col sm="12" xs="12" md="3" cols="12" align="left">
             <v-btn @click="search" width="100%" color="primary" dark x-large>Suchen</v-btn>
           </v-col>
         </v-row>
       </v-col>
       <GmapMap
-          style="width: 1150px; height: 500px"
-          :zoom="7"
+          style="width: 100%; height: 500px"
+          :zoom="8"
           :center="{ lat: 46.8131873 , lng: 8.22421 }
       ">
         <DirectionsRenderer travelMode="DRIVING" :origin="origin" :destination="destionation" :location="location"/>
