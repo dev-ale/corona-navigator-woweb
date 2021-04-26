@@ -1,19 +1,19 @@
 <template>
   <v-row>
     <v-col cols="12" align="center">
-      <v-progress-circular
-          :size="100"
-          color="primary"
-          indeterminate
-      ></v-progress-circular>
+      <LottieAnimation :speed="2.5" :width="300" :height="300" path="animations/covid-loader.json"/>
+      <h2 class="primary--text">Loading</h2>
     </v-col>
   </v-row>
+
 
 </template>
 
 <script>
+import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 export default {
-name: "ProgressLoader"
+name: "ProgressLoader",
+  components: { LottieAnimation },
 }
 </script>
 
