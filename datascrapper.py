@@ -4,10 +4,7 @@ import requests
 import json
 import datetime
 from datetime import datetime, date, timedelta
-import ssl
 import urllib3
-import time
-import certifi
 
 YESTERDAY = 1
 
