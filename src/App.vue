@@ -63,36 +63,58 @@ export default {
   },
   data: () => ({
     view: "zug",
-    incidences: [{
-      name: "Basel",
-      canton: "BS",
-      date: "2021-04-19",
-      incident: 272,
-    },
-    {
-      name: "Muttenz",
-      canton: "BS",
-      date: "2021-04-19",
-      incident: 222,
-    },
-    {
-      name: "Aesch",
-      canton: "BL",
-      date: "2021-04-19",
-      incident: 201,
-    },
-    {
-      name: "Pratteln",
-      canton: "BL",
-      date: "2021-04-19",
-      incident: 215,
-    },
-    {
-      name: "Solothurn",
-      canton: "SO",
-      date: "2021-04-19",
-      incident: 401,
-    }]
+    incidences: []
   }),
+  mounted() {
+    this.getIncidences()
+  },
+  methods: {
+    getIncidences() {
+      axios.get(`/api/incidences`)
+          .then(response => {
+            // JSON responses are automatically parsed.
+            console.log("Used Data from Server")
+            console.log(response)
+            if (response.data.length > 0) {
+              this.incidences = response.data
+            }else {
+              console.log("Sample Data used")
+              this.incidences = [{
+                name: "Basel",
+                canton: "BS",
+                date: "2021-04-19",
+                incident: 272,
+              },
+                {
+                  name: "Muttenz",
+                  canton: "BS",
+                  date: "2021-04-19",
+                  incident: 222,
+                },
+                {
+                  name: "Aesch",
+                  canton: "BL",
+                  date: "2021-04-19",
+                  incident: 201,
+                },
+                {
+                  name: "Pratteln",
+                  canton: "BL",
+                  date: "2021-04-19",
+                  incident: 215,
+                },
+                {
+                  name: "Solothurn",
+                  canton: "SO",
+                  date: "2021-04-19",
+                  incident: 401,
+                }]
+            }
+          })
+          .catch(e => {
+            this.errors.push(e)
+          })
+    }
+  }
 };
 </script>
