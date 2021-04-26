@@ -2,7 +2,7 @@ import { MapElementFactory } from "vue2-google-maps";
 
 export default MapElementFactory({
     name: "directionsRenderer",
-
+    response: 'empty',
     ctr() {
         return window.google.maps.DirectionsRenderer;
     },
@@ -11,11 +11,18 @@ export default MapElementFactory({
 
     mappedProps: {},
 
+    methods: {
+        getDirections (res) {
+            this.$emit('getDirections', res)
+        },
+    },
+
     props: {
         origin: { type: Object },
         destination: { type: Object },
         location: {type: String},
-        travelMode: { type: String }
+        travelMode: { type: String },
+        search: {type: Function}
     },
 
     afterCreate(directionsRenderer) {
@@ -52,6 +59,8 @@ export default MapElementFactory({
                     (response, status) => {
                         if (status !== "OK") return;
                         directionsRenderer.setDirections(response);
+                        this.getDirections(response)
+                        //console.log(response.routes[0].legs[0].duration)
                     }
                 );
             }
