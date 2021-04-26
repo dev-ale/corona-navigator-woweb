@@ -9,3 +9,4 @@ requests
 urllib3
 configparser
 Flask-PyMongo
+dnspython

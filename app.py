@@ -13,7 +13,7 @@ mongo = PyMongo(app)
 def index():
     return app.send_static_file('index.html')
 
-@app.route('/incidences', methods=['GET'])
+@app.route('/api/incidences', methods=['GET'])
 def incidences():
     ins = mongo.db.incidences.find(
         {},
