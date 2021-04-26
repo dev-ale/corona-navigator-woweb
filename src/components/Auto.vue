@@ -20,6 +20,13 @@
           </v-col>
         </v-row>
       </v-col>
+      <v-row>
+        <v-col align="center">
+          <h4 v-if="duration1Text !== ''">{{ duration1Text }}</h4>
+          <h4 v-if="stoppoint !== ''">{{ duration2Text }}</h4>
+        </v-col>
+      </v-row>
+
       <GmapMap
           style="width: 100%; height: 500px"
           :zoom="8"
@@ -55,6 +62,8 @@ export default {
     directions: null,
     startLocation: {lat: 46.8131873, lng: 8.22421},
     endLocation: {lat: null, lng: null},
+    duration1Text: "",
+    duration2Text: ""
   }),
 
   computed: {
@@ -82,6 +91,29 @@ export default {
 
       this.endLocation.lat = this.directions.routes[0].legs[0].end_location.lat()
       this.endLocation.lng = this.directions.routes[0].legs[0].end_location.lng()
+
+      this.duration = this.directions.routes[0].legs[0].duration.text
+      this.distance = this.directions.routes[0].legs[0].distance.text
+      this.getDistance()
+    },
+    getDistance () {
+      let obj1 = this.directions.routes[0].legs[0]
+      let obj2 = this.directions.routes[0].legs[1]
+      console.log(obj1)
+      console.log(obj2)
+
+      let start = obj1.start_address
+      let stop = obj1.end_address
+      let duration = obj1.duration.text
+      this.duration1Text = start + " - " + stop + " Fahrtzeit: " + duration
+      if (obj2) {
+        let start2 = obj2.start_address
+        let stop2 = obj2.end_address
+        let duration2 = obj2.duration.text
+        this.duration2Text = start2 + " - " + stop2 + " Fahrtzeit: " + duration2
+      }else {
+        this.duration2Text = ""
+      }
     },
     search(){
 
