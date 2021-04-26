@@ -34,7 +34,7 @@
         <DirectionsRenderer travelMode="DRIVING" :origin="origin" :destination="destionation" :location="location" @getDirections="getDirections" :search="search"/>
       </GmapMap>
       <v-row>
-        <v-col cols="4">
+        <v-col xs="12" sm="12" md="4">
           <v-list dense>
             <v-list-item>
               <v-list-item-title>
