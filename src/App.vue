@@ -73,9 +73,10 @@ export default {
       axios.get(`/api/incidences`)
           .then(response => {
             // JSON responses are automatically parsed.
-            console.log("Used Data from Server")
+
             console.log(response)
             if (response.data.length > 0) {
+              console.log("Used Data from Server")
               this.incidences = response.data
             }else {
               console.log("Sample Data used")
