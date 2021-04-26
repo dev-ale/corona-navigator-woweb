@@ -4,20 +4,20 @@
     <div>
       <v-col align="center">
         <v-row>
-          <v-col sm="4" xs="4" md="3" cols="12">
+          <v-col sm="4" xs="4" md="4" cols="12">
             <v-text-field solo clearable v-model="start" placeholder="von"></v-text-field>
           </v-col>
 
-          <v-col sm="4" xs="4" md="3" cols="12">
+          <v-col sm="4" xs="4" md="4" cols="12">
             <v-text-field solo clearable v-model="stoppoint" placeholder="pause"></v-text-field>
           </v-col>
 
-          <v-col sm="4" xs="4" md="3" cols="12">
+          <v-col sm="4" xs="4" md="4" cols="12">
             <v-text-field solo clearable v-model="end" placeholder="bis"></v-text-field>
           </v-col>
-          <v-col sm="12" xs="12" md="3" cols="12" align="left">
+<!--          <v-col sm="12" xs="12" md="3" cols="12" align="left">
             <v-btn @click="search" width="100%" color="primary" dark x-large>Suchen</v-btn>
-          </v-col>
+          </v-col>-->
         </v-row>
       </v-col>
       <v-row>
@@ -26,20 +26,45 @@
           <h4 v-if="stoppoint !== ''">{{ duration2Text }}</h4>
         </v-col>
       </v-row>
-
       <GmapMap
           style="width: 100%; height: 500px"
           :zoom="8"
           :center="{ lat: 46.8131873 , lng: 8.22421 }
       ">
-
         <DirectionsRenderer travelMode="DRIVING" :origin="origin" :destination="destionation" :location="location" @getDirections="getDirections" :search="search"/>
-        <GmapMarker
-            :position="{ lat: this.startLocation.lat, lng: this.startLocation.lng}"
-            :clickable="true"
-            title="Test"
-        />
       </GmapMap>
+      <v-row>
+        <v-col xs="12" sm="12" md="4">
+          <v-list dense>
+            <v-list-item>
+              <v-list-item-title>
+                <h2>{{ start }}</h2>
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                <v-chip color="primary" dark>123</v-chip>
+              </v-list-item-subtitle>
+            </v-list-item>
+
+            <v-list-item v-if="stoppoint">
+              <v-list-item-title>
+                <h2>{{ stoppoint }}</h2>
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                <v-chip color="primary" dark>213</v-chip>
+              </v-list-item-subtitle>
+            </v-list-item>
+
+            <v-list-item>
+              <v-list-item-title>
+                <h2>{{ end }}</h2>
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                <v-chip color="primary" dark>321</v-chip>
+              </v-list-item-subtitle>
+            </v-list-item>
+          </v-list>
+        </v-col>
+      </v-row>
 
     </div>
   </v-container>
@@ -99,8 +124,6 @@ export default {
     getDistance () {
       let obj1 = this.directions.routes[0].legs[0]
       let obj2 = this.directions.routes[0].legs[1]
-      console.log(obj1)
-      console.log(obj2)
 
       let start = obj1.start_address
       let stop = obj1.end_address
