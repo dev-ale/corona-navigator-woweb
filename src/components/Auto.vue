@@ -41,7 +41,8 @@
                 <h2>{{ start }}</h2>
               </v-list-item-title>
               <v-list-item-subtitle>
-                <v-chip color="primary" dark>123</v-chip>
+                <v-chip v-if="!isNaN(getIncident(start))" color="primary" dark>{{ getIncident(start) }}</v-chip>
+                <v-chip v-if="isNaN(getIncident(start))" outlined color="primary">{{ getIncident(start) }}</v-chip>
               </v-list-item-subtitle>
             </v-list-item>
 
@@ -50,7 +51,8 @@
                 <h2>{{ stoppoint }}</h2>
               </v-list-item-title>
               <v-list-item-subtitle>
-                <v-chip color="primary" dark>213</v-chip>
+                <v-chip v-if="!isNaN(getIncident(stoppoint))" color="primary" dark>{{ getIncident(stoppoint) }}</v-chip>
+                <v-chip v-if="isNaN(getIncident(stoppoint))" outlined color="primary">{{ getIncident(stoppointl) }}</v-chip>
               </v-list-item-subtitle>
             </v-list-item>
 
@@ -59,7 +61,8 @@
                 <h2>{{ end }}</h2>
               </v-list-item-title>
               <v-list-item-subtitle>
-                <v-chip color="primary" dark>321</v-chip>
+                <v-chip v-if="!isNaN(getIncident(end))" color="primary" dark>{{ getIncident(end) }}</v-chip>
+                <v-chip v-if="isNaN(getIncident(end))" outlined color="primary">{{ getIncident(end) }}</v-chip>
               </v-list-item-subtitle>
             </v-list-item>
           </v-list>
@@ -79,13 +82,16 @@ export default {
   components: {
     DirectionsRenderer
   },
+  props: {
+    incidences: Array,
+  },
 
   data: () => ({
     start: "Basel",
     end: "Zürich",
     stoppoint: "",
     directions: null,
-    startLocation: {lat: 46.8131873, lng: 8.22421},
+    startLocation: {lat: null, lng: null},
     endLocation: {lat: null, lng: null},
     duration1Text: "",
     duration2Text: ""
@@ -107,6 +113,17 @@ export default {
     }
   },
   methods: {
+
+    // Calculalate Incidents from city name
+    getIncident(n) {
+      let name = n.charAt(0).toUpperCase() + n.slice(1);
+      if (this.incidences.find(it => it.name === name)) {
+        const city = this.incidences.find(it => it.name === name);
+        return (city.incident)
+      } else {
+        return "Keine Daten verfügbar"
+      }
+    },
     getDirections (resp) {
       this.directions = resp
       //console.log(this.directions)
@@ -120,6 +137,8 @@ export default {
       this.duration = this.directions.routes[0].legs[0].duration.text
       this.distance = this.directions.routes[0].legs[0].distance.text
       this.getDistance()
+      console.log(this.incidences)
+      console.log(this.getIncident('Basel'));
     },
     getDistance () {
       let obj1 = this.directions.routes[0].legs[0]
