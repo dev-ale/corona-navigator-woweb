@@ -8,8 +8,8 @@
 
         <h2>Aargau: 0/210</h2>
         <h2>Bern: 0/339</h2>
-        <h2>Basel-Land: 86/86</h2>
-        <h2>Basel-Stadt: 3/3</h2>
+        <h2>Basel-Land: 0/86</h2>
+        <h2>Basel-Stadt: 0/3</h2>
         <h2>Fribourg: 0/128</h2>
         <h2>Graubünden: 0/101</h2>
         <h2>Luzern: 0/80</h2>
@@ -22,7 +22,7 @@
 
       </div>
     </v-col>
-    <v-col>
+    <v-col cols="8" xs="12" md="7">
       <SwitzerlandMap/>
     </v-col>
   </v-row>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <svg width="1011px" height="645px" viewBox="0 0 1011 645" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <svg width="100%" height="100%" viewBox="0 0 1011 645" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <title>Map</title>
       <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="Artboard" transform="translate(-149.000000, -296.000000)" fill-rule="nonzero">
