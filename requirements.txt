@@ -8,4 +8,3 @@ Werkzeug==1.0.1
 requests
 urllib3
 configparser
-urllib
