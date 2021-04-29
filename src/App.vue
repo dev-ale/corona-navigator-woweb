@@ -97,13 +97,13 @@ export default {
   mounted() {
     this.getIncidences()
   },
-  watch: {
+/*  watch: {
     // whenever question changes, this function will run
     updateIncidences: function (newQuestion, oldQuestion) {
       this.incidences = newQuestion
       console.log('wathcer called')
     }
-  },
+  },*/
   methods: {
     getIncidences() {
       axios.get(`/api/incidences`)
@@ -117,36 +117,7 @@ export default {
             }else {
               console.log("Array is Empty")
               console.log("Sample Data used")
-              this.incidences = [{
-                name: "Basel",
-                canton: "BS",
-                date: "2021-04-19",
-                incident: 272,
-              },
-                {
-                  name: "Muttenz",
-                  canton: "BS",
-                  date: "2021-04-19",
-                  incident: 222,
-                },
-                {
-                  name: "Aesch",
-                  canton: "BL",
-                  date: "2021-04-19",
-                  incident: 201,
-                },
-                {
-                  name: "Pratteln",
-                  canton: "BL",
-                  date: "2021-04-19",
-                  incident: 215,
-                },
-                {
-                  name: "Solothurn",
-                  canton: "SO",
-                  date: "2021-04-19",
-                  incident: 401,
-                }]
+
             }
           })
           .catch(e => {

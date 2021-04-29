@@ -2,14 +2,21 @@
   <v-row>
     <v-col>
       <div class="ml-5">
-        <h3>Anzahl Gemeinden: {{ this.incidences.length }}</h3>
-        <h3>Kantone: <strong v-for="(canton, index) in this.getCantons()" :key="index"> {{ canton }}</strong> ({{ this.getCantons().length }})</h3>
+        <h3>Gemeinden: {{ this.incidences.length }}</h3>
+        <h3>Kantone: {{ this.getCantons().length }}</h3>
         <br>
 
         <v-list v-for="(canton, index) in this.getCantons()" :key="index">
           <v-list-item>
-            <v-list-item-title> {{ canton }} ({{ getIncidencesForCanton(canton).gemeinden }})</v-list-item-title>
-            <v-list-item-subtitle>{{ getIncidencesForCanton(canton).average }}</v-list-item-subtitle>
+            <v-list-item-title>
+              <h3> {{ canton }} ({{ getCitiesForCanton(canton) }})</h3>
+            </v-list-item-title>
+            <v-list-item-subtitle>
+              <v-chip dark color="primary">
+                {{ getIncidencesForCanton(canton) }}
+              </v-chip>
+
+            </v-list-item-subtitle>
           </v-list-item>
         </v-list>
 
@@ -30,8 +37,7 @@
       </div>
     </v-col>
     <v-col cols="8" xs="12" md="7">
-      <SwitzerlandMap @select-canton="selectCanton"/>
-      <h1>{{ selectedCanton }}</h1>
+      <SwitzerlandMap/>
     </v-col>
   </v-row>
 
@@ -48,45 +54,38 @@ export default {
   },
   data: () => {
     return {
-      selectedCanton: null
+
     }
 
   },
   mounted() {
-    incidences: this.incidences
+    //incidences: this.incidences
     this.getCantons();
 
   },
   methods: {
-    selectCanton (canton) {
-      if (canton === "Basel") {
-        this.selectedCanton = this.getIncidencesForCanton('BS')
-        console.log('hallo')
-      }
-    },
     getCantons() {
       let cantons = [];
       this.incidences.forEach(function (arrayItem) {
         cantons.push(arrayItem.canton)
+        console.log(arrayItem.canton)
       });
       cantons = [...new Set(cantons)];
+      console.log(cantons)
       return cantons;
     },
+    getCitiesForCanton(canton) {
+      return this.incidences.filter((obj) => obj.canton === canton).length;
+    },
+
     getIncidencesForCanton(canton) {
       let total = 0;
-      let count = 0;
-      this.incidences.forEach( function (arrayItem) {
-        if (arrayItem.canton = canton) {
-          count ++;
-          total += arrayItem.incident
-        }
+      const array = this.incidences.filter((obj) => obj.canton === canton)
+      array.forEach(function (arrayItem) {
+        total += arrayItem.incident
       });
-      console.log(total);
-      console.log(total / count)
-      return {
-        gemeinden: count,
-        average: total/count
-      }
+      const count = this.getCitiesForCanton(canton)
+      return total / count
     }
   }
 }
