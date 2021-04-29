@@ -27,13 +27,14 @@
         </v-col>
       </v-row>
       <GmapMap
+          v-if="start && end"
           style="width: 100%; height: 500px"
           :zoom="8"
           :center="{ lat: 46.8131873 , lng: 8.22421 }
       ">
         <DirectionsRenderer travelMode="DRIVING" :origin="origin" :destination="destionation" :location="location" @getDirections="getDirections" :search="search"/>
       </GmapMap>
-      <v-row>
+      <v-row v-if="start && end">
         <v-col xs="12" sm="12" md="4">
           <v-list dense>
             <v-list-item>
@@ -87,8 +88,8 @@ export default {
   },
 
   data: () => ({
-    start: "Basel",
-    end: "Zürich",
+    start: "",
+    end: "",
     stoppoint: "",
     directions: null,
     startLocation: {lat: null, lng: null},

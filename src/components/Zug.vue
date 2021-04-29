@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <ZugInput @search="search"/>
     <v-row v-if="!notFound && !stations && !loading">
       <v-col align="center">
@@ -11,7 +11,7 @@
     <ZugStations v-if="!loading" :stations="stations"/>
     <Score v-if="stations" :stations="stations"/>
     <ProgressLoader v-if="loading"/>
-  </div>
+  </v-container>
 </template>
 
 <script>

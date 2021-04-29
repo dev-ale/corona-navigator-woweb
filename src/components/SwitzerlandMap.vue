@@ -76,6 +76,7 @@ name: "SwitzerlandMap",
   methods: {
     changeTitle (canton) {
       this.canton = canton;
+      this.$emit('select-canton',canton);
     }
   }
 }
