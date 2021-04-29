@@ -42,7 +42,7 @@
                 <h2>{{ start }}</h2>
               </v-list-item-title>
               <v-list-item-subtitle>
-                <v-chip v-if="!isNaN(getIncident(start))" color="primary" dark>{{ getIncident(start) }}</v-chip>
+                <v-chip v-if="!isNaN(getIncident(start))" color="primary" dark>{{ Math.round(getIncident(start)) }}</v-chip>
                 <v-chip v-if="isNaN(getIncident(start))" outlined color="primary">{{ getIncident(start) }}</v-chip>
               </v-list-item-subtitle>
             </v-list-item>
@@ -52,7 +52,7 @@
                 <h2>{{ stoppoint }}</h2>
               </v-list-item-title>
               <v-list-item-subtitle>
-                <v-chip v-if="!isNaN(getIncident(stoppoint))" color="primary" dark>{{ getIncident(stoppoint) }}</v-chip>
+                <v-chip v-if="!isNaN(getIncident(stoppoint))" color="primary" dark>{{ Math.round(getIncident(stoppoint)) }}</v-chip>
                 <v-chip v-if="isNaN(getIncident(stoppoint))" outlined color="primary">{{ getIncident(stoppointl) }}</v-chip>
               </v-list-item-subtitle>
             </v-list-item>
@@ -62,7 +62,7 @@
                 <h2>{{ end }}</h2>
               </v-list-item-title>
               <v-list-item-subtitle>
-                <v-chip v-if="!isNaN(getIncident(end))" color="primary" dark>{{ getIncident(end) }}</v-chip>
+                <v-chip v-if="!isNaN(getIncident(end))" color="primary" dark>{{ Math.round(getIncident(end)) }}</v-chip>
                 <v-chip v-if="isNaN(getIncident(end))" outlined color="primary">{{ getIncident(end) }}</v-chip>
               </v-list-item-subtitle>
             </v-list-item>
