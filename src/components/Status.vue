@@ -1,33 +1,34 @@
 <template>
-  <v-row>
-    <v-col>
-      <div class="ml-5">
-        <h3>Gemeinden: {{ this.incidences.length }}</h3>
-        <h3>Kantone: {{ this.getCantons().length }}</h3>
-        <br>
+  <v-layout>
+    <v-row>
+      <v-col>
+        <div class="ml-5">
+          <h3>Gemeinden: {{ this.incidences.length }}</h3>
+          <h3>Kantone: {{ this.getCantons().length }}</h3>
+          <br>
 
-        <v-list v-for="(canton, index) in this.getCantons()" :key="index">
-          <v-list-item>
-            <v-list-item-title>
-              <h3> {{ canton }} ({{ getCitiesForCanton(canton) }})</h3>
-            </v-list-item-title>
-            <v-list-item-subtitle>
-              <v-chip dark color="primary">
-                {{ getIncidencesForCanton(canton) }}
-              </v-chip>
+          <v-list v-for="(canton, index) in this.getCantons()" :key="index">
+            <v-list-item>
+              <v-list-item-title>
+                <h3> {{ canton }} ({{ getCitiesForCanton(canton) }})</h3>
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                <v-chip dark color="primary">
+                  {{ getIncidencesForCanton(canton) }}
+                </v-chip>
 
-            </v-list-item-subtitle>
-          </v-list-item>
-        </v-list>
-
-
-
-      </div>
-    </v-col>
-    <v-col cols="8" xs="12" md="7">
-      <SwitzerlandMap/>
-    </v-col>
-  </v-row>
+              </v-list-item-subtitle>
+            </v-list-item>
+          </v-list>
+        </div>
+      </v-col>
+      <v-col cols="8" xs="12" md="7" align="center">
+        <SwitzerlandMap @select-canton="selectCanton"/>
+        <h1>{{showDetails.name}}</h1>
+        <v-chip v-if="showDetails.incident" dark color="primary">{{showDetails.incident}}</v-chip>
+      </v-col>
+    </v-row>
+  </v-layout>
 
 
 </template>
@@ -56,6 +57,10 @@ export default {
         TG: 80,
         ZG: 11,
         ZH: 162
+      },
+      showDetails: {
+        name: null,
+        incident: null
       }
     }
 
@@ -66,6 +71,12 @@ export default {
 
   },
   methods: {
+    selectCanton (canton) {
+      console.log(canton)
+      this.showDetails.name = canton
+      this.showDetails.incident = this.getIncidencesForCanton(canton)
+    },
+
     getCantons() {
       let cantons = [];
       this.incidences.forEach(function (arrayItem) {
