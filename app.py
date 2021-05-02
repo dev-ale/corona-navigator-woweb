@@ -2,6 +2,7 @@
 from flask import Flask, request, jsonify
 import os
 from flask_pymongo import PyMongo
+import logging.config
 
 app = Flask(__name__, static_folder='dist/',    static_url_path='/')
 
