@@ -1,10 +1,17 @@
 from app import mongo
 from datascrapper import get_incidences_from_canton_services, get_municipalities_from_canton_services
+import logging.config
+
+logging.config.fileConfig('logging.ini')
+logger = logging.getLogger('LOGGER')
+errorLogger = logging.getLogger('ERROR-LOGGER')
 
 #puts data from datascraper into Database
 def update_db():
     # import incidences
+    logger.info("Getting data from datascrapper...")
     incidences = get_incidences_from_canton_services()
+    logger.info("Iterate over cantons and incidences and save them into the database")
     for canton in incidences.values():
         for incidence in canton:
             try:
@@ -21,11 +28,14 @@ def update_db():
                     },
                     upsert=True
                 )
+                logger.info("DB Insert/Update was successful")
             except Exception as e:
-                print('invalid data: ' + str(incidence)) # TODO add logger
+                errorLogger.error('invalid data: ' + str(incidence))
 
     # add municipality data
+    logger.info("Getting data from datascrapper...")
     municipalities = get_municipalities_from_canton_services()
+    logger.info("Iterate over cantons and municipalities and save them into the database")
     for canton in municipalities.values():
         for municipality in canton:
             try:
@@ -42,5 +52,6 @@ def update_db():
                         }
                     }
                 )
+                logger.info("DB Insert/Update was successful")
             except Exception as e:
-                print('invalid data: ' + str(municipality)) # TODO add logger
+                errorLogger.error('invalid data: ' + str(municipality))
