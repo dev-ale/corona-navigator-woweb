@@ -43,7 +43,7 @@ def get_incidences_from_canton_services():
 
         # get data for AG
         url_ag = parser.get("config", "ag_incidences")
-        url_ag += "/?dateFrom=" + str(yesterday) + "&dateTo=" + str(dateTo)
+        url_ag += "/?dateFrom=" + str(yesterday) + "&dateTo=" + str(date_to)
         dict['AG'] = call_to_service_without_certificate(url_ag)
         logger.info("Got data from AG: " + str(len(dict['AG'])) + " \t\tentries for incidences")
 
