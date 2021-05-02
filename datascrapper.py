@@ -75,7 +75,7 @@ def get_incidences_from_canton_services():
 
         # get data from LU
         url_lu = parser.get("config", "lu_incidences")
-        url_lu += "/?dateFrom=" + str(yesterday) + "&dateTo=" + str(dateTo)
+        url_lu += "/?dateFrom=" + str(yesterday) + "&dateTo=" + str(date_to)
         certificate = "./certificates/certificate_lu.pem"
         data = call_to_service_with_pool_manager(certificate, url_lu)
         dict['LU'] = data
