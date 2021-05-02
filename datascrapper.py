@@ -7,8 +7,6 @@ from datetime import datetime, date, timedelta
 import urllib3
 import logging.config
 
-YESTERDAY = 1
-
 logging.config.fileConfig('logging.ini')
 logger = logging.getLogger('LOGGER')
 errorLogger = logging.getLogger('ERROR-LOGGER')
@@ -18,6 +16,7 @@ def get_incidences_from_canton_services():
         dict = {}
         date_to = date.today()
         date_from = date_to
+        yesterday = date_to - timedelta(days=1)
 
         # get configuration file
         parser = configparser.ConfigParser()
@@ -44,7 +43,7 @@ def get_incidences_from_canton_services():
 
         # get data for AG
         url_ag = parser.get("config", "ag_incidences")
-        url_ag += "/?dateFrom=" + str(date_from) + "&dateTo=" + str(date_to)
+        url_ag += "/?dateFrom=" + str(yesterday) + "&dateTo=" + str(dateTo)
         dict['AG'] = call_to_service_without_certificate(url_ag)
         logger.info("Got data from AG: " + str(len(dict['AG'])) + " \t\tentries for incidences")
 
@@ -76,7 +75,7 @@ def get_incidences_from_canton_services():
 
         # get data from LU
         url_lu = parser.get("config", "lu_incidences")
-        url_lu += "/?dateFrom=" + str(date_from) + "&dateTo=" + str(date_to)
+        url_lu += "/?dateFrom=" + str(yesterday) + "&dateTo=" + str(dateTo)
         certificate = "./certificates/certificate_lu.pem"
         data = call_to_service_with_pool_manager(certificate, url_lu)
         dict['LU'] = data
@@ -92,7 +91,7 @@ def get_incidences_from_canton_services():
 
         # get data from SG
         url_sg = parser.get("config", "sg_incidences")
-        url_sg += "/?dateFrom=" + str(date_from) + "&dateTo=" + str(date_to)
+        url_sg += "/?dateFrom=" + str(yesterday) + "&dateTo=" + str(date_to)
         certificate = "./certificates/certificate_sg.pem"
         data = call_to_service_with_pool_manager(certificate, url_sg)
         dict['SG'] = data
