@@ -201,6 +201,7 @@ def call_to_service_with_pool_manager(certificate, url):
         data = json.loads(json_data)
         return data
     except Exception as ex:
+        errorLogger.error(str(ex))
         return []
 
 
@@ -214,6 +215,7 @@ def call_to_service_with_pool_manager_fr(certificate, url):
         data = json.loads(json_data)
         return data
     except Exception as ex:
+        errorLogger.error(str(ex))
         return []
 
 def call_to_service_without_certificate(url):
@@ -222,6 +224,7 @@ def call_to_service_without_certificate(url):
         data = json.loads(json_url.read())
         return data
     except Exception as ex:
+        errorLogger.error(str(ex))
         return []
 
 
@@ -229,4 +232,3 @@ if __name__ == '__main__':
     dict = {}
     dict['incidences'] = get_incidences_from_canton_services()
     dict['municipalities'] = get_municipalities_from_canton_services()
-    print(dict)
