@@ -6,40 +6,60 @@
           <h3>Gemeinden: {{ this.incidences.length }}</h3>
           <h3>Kantone: {{ this.getCantons().length }} / 13</h3>
           <br>
+          <v-card>
+            <v-list >
+              <v-list-item>
+                <v-list-item-title>
+                  <h3>Kantone</h3>
+                </v-list-item-title>
+                <v-list-item-title>
+                  <h3>Gemeinden</h3>
+                </v-list-item-title>
+                <v-list-item-title>
+                  <h3>14-Tage-Inzidenz</h3>
+                </v-list-item-title>
+              </v-list-item>
+              <v-list-item v-for="(canton, index) in this.getCantons()" :key="index">
+                <v-list-item-avatar>
+                  <v-img :src="'img/cantons/' + canton + '.jpg'"></v-img>
+                </v-list-item-avatar>
+                <v-list-item-title>
+                  <h3> {{ canton }}</h3>
+                </v-list-item-title>
+                <v-list-item-title>
+                  <h3>{{ getCitiesForCanton(canton) }} ({{ getTotalCitiesForCanton(canton) }})</h3>
+                </v-list-item-title>
+                <v-list-item-subtitle>
+                  <v-chip dark color="primary">
+                    {{ getIncidencesForCanton(canton) }}
+                  </v-chip>
+                  <v-chip class="ml-5" small outlined color="primary">
+                    {{ getDateForCanton(canton) | moment("from", "now") }}
+                  </v-chip>
+                </v-list-item-subtitle>
+              </v-list-item>
+            </v-list>
+          </v-card>
 
-          <v-list >
-            <v-list-item>
-              <v-list-item-title>
-                <h3>Kantone</h3>
-              </v-list-item-title>
-              <v-list-item-subtitle>
-                <h3>14-Tage-Inzidenz</h3>
-              </v-list-item-subtitle>
-            </v-list-item>
-            <v-list-item v-for="(canton, index) in this.getCantons()" :key="index">
-              <v-list-item-avatar>
-                <v-img :src="'img/cantons/' + canton + '.jpg'"></v-img>
-              </v-list-item-avatar>
-              <v-list-item-title>
-                <h3> {{ canton }} ({{ getCitiesForCanton(canton) }})</h3>
-              </v-list-item-title>
-              <v-list-item-subtitle>
-                <v-chip dark color="primary">
-                  {{ getIncidencesForCanton(canton) }}
-                </v-chip>
-                <v-chip class="ml-5" small outlined color="primary">
-                  {{ getDateForCanton(canton) | moment("from", "now") }}
-                </v-chip>
-
-              </v-list-item-subtitle>
-            </v-list-item>
-          </v-list>
+        </div>
+        <div hidden>
+          <v-card>
+            <v-row>
+              <v-col align="right">
+                <v-avatar><v-img :src="'img/cantons/' + showDetails.name + '.jpg'"></v-img></v-avatar>
+              </v-col>
+              <v-col align="center">
+                <h1>{{showDetails.name}}</h1>
+              </v-col>
+              <v-col align="left">
+                <v-chip v-if="showDetails.incident" dark color="primary">{{showDetails.incident}}</v-chip>
+              </v-col>
+            </v-row>
+          </v-card>
         </div>
       </v-col>
       <v-col cols="8" xs="12" md="7" align="center">
         <SwitzerlandMap @select-canton="selectCanton"/>
-        <h1>{{showDetails.name}}</h1>
-        <v-chip v-if="showDetails.incident" dark color="primary">{{showDetails.incident}}</v-chip>
       </v-col>
     </v-row>
   </v-layout>
@@ -58,7 +78,7 @@ export default {
   },
   data: () => {
     return {
-      countCities: {
+      totalCities: {
         AG: 210,
         BE: 339,
         BL: 86,
@@ -103,6 +123,9 @@ export default {
     },
     getCitiesForCanton(canton) {
       return this.incidences.filter((obj) => obj.canton === canton).length;
+    },
+    getTotalCitiesForCanton(canton) {
+      return this.totalCities.[canton]
     },
 
     getIncidencesForCanton(canton) {
