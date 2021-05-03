@@ -3,7 +3,7 @@
     <ZugInput @search="search"/>
     <v-row v-if="!notFound && !stations && !loading">
       <v-col align="center">
-        <h2>please enter start and end point</h2>
+        <h2>Bitte geben Sie einen Start und Endort ein.</h2>
       </v-col>
     </v-row>
 

@@ -117,7 +117,6 @@ export default {
             }else {
               console.log("Array is Empty")
               console.log("Sample Data used")
-
             }
           })
           .catch(e => {

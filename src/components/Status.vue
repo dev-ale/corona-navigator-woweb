@@ -16,6 +16,9 @@
                 <v-chip dark color="primary">
                   {{ getIncidencesForCanton(canton) }}
                 </v-chip>
+                <v-chip class="ml-5" small outlined color="primary">
+                  {{ getDateForCanton(canton) }}
+                </v-chip>
 
               </v-list-item-subtitle>
             </v-list-item>
@@ -68,11 +71,12 @@ export default {
   mounted() {
     //incidences: this.incidences
     this.getCantons();
+    console.log(this.incidences)
+    this.getDateForCanton('BS')
 
   },
   methods: {
     selectCanton (canton) {
-      console.log(canton)
       this.showDetails.name = canton
       this.showDetails.incident = this.getIncidencesForCanton(canton)
     },
@@ -81,11 +85,12 @@ export default {
       let cantons = [];
       this.incidences.forEach(function (arrayItem) {
         cantons.push(arrayItem.canton)
-        console.log(arrayItem.canton)
       });
       cantons = [...new Set(cantons)];
-      console.log(cantons)
       return cantons;
+    },
+    getDateForCanton(canton) {
+      return this.incidences.filter((obj) => obj.canton === canton)[0].date;
     },
     getCitiesForCanton(canton) {
       return this.incidences.filter((obj) => obj.canton === canton).length;

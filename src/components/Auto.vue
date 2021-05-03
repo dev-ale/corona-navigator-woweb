@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <h2>Auto</h2>
     <div>
       <v-col align="center">
         <v-row>
