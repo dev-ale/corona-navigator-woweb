@@ -4,7 +4,7 @@
       <v-col>
         <div class="ml-5">
           <h3>Gemeinden: {{ this.incidences.length }}</h3>
-          <h3>Kantone: {{ this.getCantons().length }}</h3>
+          <h3>Kantone: {{ this.getCantons().length }} / 13</h3>
           <br>
 
           <v-list v-for="(canton, index) in this.getCantons()" :key="index">
@@ -17,7 +17,7 @@
                   {{ getIncidencesForCanton(canton) }}
                 </v-chip>
                 <v-chip class="ml-5" small outlined color="primary">
-                  {{ getDateForCanton(canton) }}
+                  {{ getDateForCanton(canton) | moment("from", "now", true) }} ago
                 </v-chip>
 
               </v-list-item-subtitle>

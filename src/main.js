@@ -7,6 +7,8 @@ import * as VueGoogleMaps from 'vue2-google-maps'
 const dotenv = require('dotenv');
 dotenv.config();
 
+Vue.use(require('vue-moment'));
+
 Vue.use(VueGoogleMaps, {
   load: {
     key: process.env.VUE_APP_GOOGLEMAPS_API_KEY,
