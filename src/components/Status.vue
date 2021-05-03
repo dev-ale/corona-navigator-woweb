@@ -7,8 +7,16 @@
           <h3>Kantone: {{ this.getCantons().length }} / 13</h3>
           <br>
 
-          <v-list v-for="(canton, index) in this.getCantons()" :key="index">
+          <v-list >
             <v-list-item>
+              <v-list-item-title>
+                <h3>Kantone</h3>
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                <h3>14-Tage-Inzidenz</h3>
+              </v-list-item-subtitle>
+            </v-list-item>
+            <v-list-item v-for="(canton, index) in this.getCantons()" :key="index">
               <v-list-item-title>
                 <h3> {{ canton }} ({{ getCitiesForCanton(canton) }})</h3>
               </v-list-item-title>
@@ -71,8 +79,6 @@ export default {
   },
   mounted() {
     this.getCantons();
-    console.log(this.incidences)
-    this.getDateForCanton('BS')
 
   },
   methods: {
