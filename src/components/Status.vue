@@ -17,6 +17,9 @@
               </v-list-item-subtitle>
             </v-list-item>
             <v-list-item v-for="(canton, index) in this.getCantons()" :key="index">
+              <v-list-item-avatar>
+                <v-img :src="'img/cantons/' + canton + '.jpg'"></v-img>
+              </v-list-item-avatar>
               <v-list-item-title>
                 <h3> {{ canton }} ({{ getCitiesForCanton(canton) }})</h3>
               </v-list-item-title>
