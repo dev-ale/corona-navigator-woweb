@@ -40,22 +40,25 @@
               </v-list-item>
             </v-list>
           </v-card>
-
         </div>
-        <div hidden>
-          <v-card>
-            <v-row>
-              <v-col align="right">
-                <v-avatar><v-img :src="'img/cantons/' + showDetails.name + '.jpg'"></v-img></v-avatar>
-              </v-col>
-              <v-col align="center">
-                <h1>{{showDetails.name}}</h1>
-              </v-col>
-              <v-col align="left">
-                <v-chip v-if="showDetails.incident" dark color="primary">{{showDetails.incident}}</v-chip>
-              </v-col>
-            </v-row>
-          </v-card>
+        <br>
+        <div v-if="showDetails.name">
+          <v-row>
+            <v-col align="center">
+              <h1>{{ showDetails.name }}</h1>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col align="center">
+              <img width="20%" :src="'img/cantons/' + showDetails.name + '.jpg'">
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col align="center">
+              <v-chip x-large v-if="showDetails.incident" dark color="primary">{{showDetails.incident}}</v-chip>
+            </v-col>
+          </v-row>
+
         </div>
       </v-col>
       <v-col cols="8" xs="12" md="7" align="center">
@@ -78,6 +81,7 @@ export default {
   },
   data: () => {
     return {
+      selected: false,
       totalCities: {
         AG: 210,
         BE: 339,
@@ -108,6 +112,7 @@ export default {
     selectCanton (canton) {
       this.showDetails.name = canton
       this.showDetails.incident = this.getIncidencesForCanton(canton)
+      this.selected = true
     },
 
     getCantons() {
@@ -140,6 +145,7 @@ export default {
   }
 }
 </script>
+
 
 <style scoped>
 
