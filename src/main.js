@@ -5,9 +5,15 @@ import './registerServiceWorker'
 import vuetify from './plugins/vuetify';
 import * as VueGoogleMaps from 'vue2-google-maps'
 const dotenv = require('dotenv');
+
 dotenv.config();
 
-Vue.use(require('vue-moment'));
+const moment = require('moment')
+require('moment/locale/de-ch')
+
+Vue.use(require('vue-moment'), {
+  moment
+})
 
 Vue.use(VueGoogleMaps, {
   load: {
@@ -21,6 +27,7 @@ Vue.use(VueGoogleMaps, {
     // v: '3.26',
   },
 });
+
 
 Vue.config.productionTip = false
 

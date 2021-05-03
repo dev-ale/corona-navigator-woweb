@@ -17,7 +17,7 @@
                   {{ getIncidencesForCanton(canton) }}
                 </v-chip>
                 <v-chip class="ml-5" small outlined color="primary">
-                  {{ getDateForCanton(canton) | moment("from", "now", true) }} ago
+                  {{ getDateForCanton(canton) | moment("from", "now") }}
                 </v-chip>
 
               </v-list-item-subtitle>
@@ -38,6 +38,7 @@
 
 <script>
 import SwitzerlandMap from "@/components/SwitzerlandMap";
+import Vue from "vue";
 export default {
   name: "Status",
   components: {SwitzerlandMap},
@@ -69,7 +70,6 @@ export default {
 
   },
   mounted() {
-    //incidences: this.incidences
     this.getCantons();
     console.log(this.incidences)
     this.getDateForCanton('BS')
