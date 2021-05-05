@@ -35,7 +35,8 @@ export default {
     order: [],
     score: null,
     message: null,
-    notFound: false
+    notFound: false,
+    apikey: process.env.VUE_APP_GOOGLEMAPS_API_KEY
   }),
   mounted() {
   },
@@ -90,7 +91,7 @@ export default {
               let promises = [];
               this.order.forEach((c,index) => {
                 promises.push(
-                 axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + c.x + "," + c.y + "&key=AIzaSyBgZO2t1SXT26lobA2L2B3quoEubrFUFoE")
+                 axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + c.x + "," + c.y + "&key=" +this.apikey )
                     .then(response => {
                       let dorf;
                       let canton;
