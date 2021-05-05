@@ -31,7 +31,7 @@ export default {
     from: "Pratteln",
     to: "Basel",
     loading: false,
-    stations: [],
+    stations: null,
     order: [],
     score: null,
     message: null,
@@ -109,7 +109,10 @@ export default {
                       const d = this.incidences.find(v => v.name === dorf && v.canton === canton);
                       if (d != undefined) {
                         something[index] = ({name: d.name, incident: d.incident})
-                      } else console.log(dorf, canton)
+                      } else {
+                        something[index] = ({name: dorf, incident: "Keine Daten verfügbar"})
+                        console.log(dorf, canton)
+                      }
                     })
                 )
               });
