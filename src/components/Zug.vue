@@ -100,7 +100,9 @@ export default {
                             if (x.types.includes("locality")) {
                               if (x.long_name.includes("Sankt")) {
                                 dorf = x.long_name.replace("Sankt", "St.")
-                              } else {dorf = x.long_name;}
+                              }else if(x.long_name.includes("Biel")){
+                                dorf = x.long_name.concat("/Bienne")
+                              }else {dorf = x.long_name;}
                             } else if (x.types.includes("administrative_area_level_1")) {
                               canton = x.short_name;
                             }
