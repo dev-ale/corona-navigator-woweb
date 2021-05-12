@@ -1,18 +1,11 @@
 version: '3'
 services:
-  postgres:
-    image: postgres
-    volumes:
-      - ./tmp/postgres:/data/db
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    ports:
-      - "5432:5432"
   mongo:
     image: mongo
     volumes:
-      - ./tmp/mongo:/data/db
+      - coronadb:/data/db
     ports:
       - "27017:27017"
+volumes:
+  coronadb:
+    external: true

@@ -8,3 +8,4 @@ yarn-error.log
 yarn.lock
 /dist/
 *.log
+*__pycache__

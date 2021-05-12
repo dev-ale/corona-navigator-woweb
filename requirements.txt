@@ -10,3 +10,5 @@ dnspython
 requests
 urllib3
 configparser
+pytest
+pytest-html
