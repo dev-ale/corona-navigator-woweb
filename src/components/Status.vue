@@ -156,7 +156,7 @@ export default {
       this.opacity.aargau = this.normalize(this.getIncidencesForCanton('AG'),500, 0) * 1.5;
       this.opacity.bern = this.normalize(this.getIncidencesForCanton('BE'),500, 0) * 1.5;
       this.opacity.fribourg = this.normalize(this.getIncidencesForCanton('FR'),500, 0) * 1.5;
-      this.opacity.graubuenden = this.normalize(this.getIncidencesForCanton('GB'),500, 0) * 1.5;
+      this.opacity.graubuenden = this.normalize(this.getIncidencesForCanton('GR'),500, 0) * 1.5;
       this.opacity.luzern = this.normalize(this.getIncidencesForCanton('LU'),500, 0) * 1.5;
       this.opacity.stgallen = this.normalize(this.getIncidencesForCanton('SG'),500, 0) * 1.5;
       this.opacity.solothurn = this.normalize(this.getIncidencesForCanton('SO'),500, 0) * 1.5;
