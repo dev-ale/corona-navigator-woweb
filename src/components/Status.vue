@@ -65,7 +65,7 @@
       </v-col>
 <!--      Desktop Version-->
       <v-col v-if="!$vuetify.breakpoint.mobile" cols="8" xs="12" md="6" align="center">
-        <SwitzerlandMap @select-canton="selectCanton"/>
+        <SwitzerlandMap @select-canton="selectCanton" :opacity="opacity"/>
       </v-col>
 <!--      Mobile Version-->
       <v-col v-if="$vuetify.breakpoint.mobile" cols="12" xs="12" md="12" align="center">
@@ -77,7 +77,6 @@
 
 <script>
 import SwitzerlandMap from "@/components/SwitzerlandMap";
-import { isMobileOnly } from 'mobile-device-detect';
 export default {
   name: "Status",
   components: {
@@ -88,7 +87,6 @@ export default {
   },
   data: () => {
     return {
-      isMobileOnly,
       totalCities: {
         AG: 210,
         BE: 339,
@@ -107,13 +105,28 @@ export default {
       showDetails: {
         name: null,
         incident: null
+      },
+      opacity: {
+        baselstadt: null,
+        baselland: null,
+        aargau: null,
+        bern:null,
+        fribourg: null,
+        graubuenden: null,
+        luzern: null,
+        stgallen: null,
+        solothurn: null,
+        schwyz: null,
+        thurgau: null,
+        zug: null,
+        zurich: null,
       }
     }
 
   },
   mounted() {
     this.getCantons();
-
+    this.calculateOpacity();
   },
   methods: {
 
@@ -136,6 +149,24 @@ export default {
       });
       cantons = [...new Set(cantons)];
       return cantons;
+    },
+    calculateOpacity() {
+      this.opacity.baselstadt = this.normalize(this.getIncidencesForCanton('BS'),1000, 0);
+      this.opacity.baselland = this.normalize(this.getIncidencesForCanton('BL'),1000, 0);
+      this.opacity.aargau = this.normalize(this.getIncidencesForCanton('AG'),1000, 0);
+      this.opacity.bern = this.normalize(this.getIncidencesForCanton('BE'),1000, 0);
+      this.opacity.fribourg = this.normalize(this.getIncidencesForCanton('FR'),1000, 0);
+      this.opacity.graubuenden = this.normalize(this.getIncidencesForCanton('GB'),1000, 0);
+      this.opacity.luzern = this.normalize(this.getIncidencesForCanton('LU'),1000, 0);
+      this.opacity.stgallen = this.normalize(this.getIncidencesForCanton('SG'),1000, 0);
+      this.opacity.solothurn = this.normalize(this.getIncidencesForCanton('SO'),1000, 0);
+      this.opacity.schwyz = this.normalize(this.getIncidencesForCanton('SZ'),1000, 0);
+      this.opacity.thurgau = this.normalize(this.getIncidencesForCanton('TG'),1000, 0);
+      this.opacity.zug = this.normalize(this.getIncidencesForCanton('ZG'),1000, 0);
+      this.opacity.zurich = this.normalize(this.getIncidencesForCanton('ZH'),1000, 0);
+    },
+    normalize(val, max, min) {
+      return (val - min) / (max - min);
     },
 
     /*
