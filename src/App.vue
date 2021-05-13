@@ -41,11 +41,10 @@
             <Auto v-if="view==='auto'" :incidences="incidences"/>
             <Status v-if="view==='status'" :incidences="incidences"/>
           </v-card-text>
-
         </v-card>
       </div>
-
     </v-main>
+
   </v-app>
 </template>
 
@@ -97,25 +96,19 @@ export default {
   mounted() {
     this.getIncidences()
   },
-/*  watch: {
-    // whenever question changes, this function will run
-    updateIncidences: function (newQuestion, oldQuestion) {
-      this.incidences = newQuestion
-      console.log('wathcer called')
-    }
-  },*/
   methods: {
+    /*
+    * Loads JSON file with all needed Data from Backend, if its empty,
+    * sample Data is used.
+    */
     getIncidences() {
       axios.get(`/api/incidences`)
           .then(response => {
-            // JSON responses are automatically parsed.
-
-            console.log(response.data)
             if (response.data.length > 0) {
-              console.log("Used Data from Server")
+              console.log("Used real Data from DB")
               this.incidences = response.data
             }else {
-              console.log("Array is Empty")
+              console.log("Could not load from DB")
               console.log("Sample Data used")
             }
           })

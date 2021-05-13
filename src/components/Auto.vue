@@ -14,9 +14,6 @@
           <v-col sm="4" xs="4" md="4" cols="12">
             <v-text-field solo clearable v-model="end" placeholder="bis"></v-text-field>
           </v-col>
-<!--          <v-col sm="12" xs="12" md="3" cols="12" align="left">
-            <v-btn @click="search" width="100%" color="primary" dark x-large>Suchen</v-btn>
-          </v-col>-->
         </v-row>
       </v-col>
       <v-row>
@@ -29,9 +26,16 @@
           v-if="start && end"
           style="width: 100%; height: 500px"
           :zoom="8"
-          :center="{ lat: 46.8131873 , lng: 8.22421 }
-      ">
-        <DirectionsRenderer travelMode="DRIVING" :origin="origin" :destination="destionation" :location="location" @getDirections="getDirections" :search="search"/>
+          :center="{ lat: 46.8131873 , lng: 8.22421 }"
+      >
+        <DirectionsRenderer
+            travelMode="DRIVING"
+            :origin="origin"
+            :destination="destionation"
+            :location="location"
+            @getDirections="getDirections"
+            :search="search"
+        />
       </GmapMap>
       <v-row v-if="start && end">
         <v-col xs="12" sm="12" md="4">
@@ -68,10 +72,8 @@
           </v-list>
         </v-col>
       </v-row>
-
     </div>
   </v-container>
-
 </template>
 
 <script>
@@ -114,9 +116,11 @@ export default {
   },
   methods: {
 
-    // Calculalate Incidents from city name
-    getIncident(n) {
-      let name = n.charAt(0).toUpperCase() + n.slice(1);
+    /*
+    * Calculate  Incident for specific city and return the incident value
+    */
+    getIncident(cityName) {
+      const name = cityName.charAt(0).toUpperCase() + cityName.slice(1);
       if (this.incidences.find(it => it.name === name)) {
         const city = this.incidences.find(it => it.name === name);
         return (city.incident)
@@ -124,9 +128,12 @@ export default {
         return "Keine Daten verfügbar"
       }
     },
+
+    /*
+    * Get direction and display distance and duration in UI
+    */
     getDirections (resp) {
       this.directions = resp
-      //console.log(this.directions)
 
       this.startLocation.lat = this.directions.routes[0].legs[0].start_location.lat()
       this.startLocation.lng = this.directions.routes[0].legs[0].start_location.lng()
@@ -137,9 +144,11 @@ export default {
       this.duration = this.directions.routes[0].legs[0].duration.text
       this.distance = this.directions.routes[0].legs[0].distance.text
       this.getDistance()
-      console.log(this.incidences)
-      console.log(this.getIncident('Basel'));
     },
+
+    /*
+    * Helper Function in "getDirection" to calculate and format Duration Time
+    */
     getDistance () {
       let obj1 = this.directions.routes[0].legs[0]
       let obj2 = this.directions.routes[0].legs[1]
@@ -157,10 +166,6 @@ export default {
         this.duration2Text = ""
       }
     },
-    search(){
-
-      console.log('search pressed')
-    }
   }
 };
 </script>

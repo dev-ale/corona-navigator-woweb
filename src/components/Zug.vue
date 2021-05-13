@@ -62,7 +62,7 @@ export default {
       this.stations = []
       axios.get(`https://transport.opendata.ch/v1/connections?from=${from}&to=${to}&limit=1`)
           .then(response => {
-            //console.log(response)
+            console.log(response)
             let sections = [];
             let something = [];
             this.order = [];

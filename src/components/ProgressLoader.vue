@@ -5,8 +5,6 @@
       <h2 class="primary--text">Loading</h2>
     </v-col>
   </v-row>
-
-
 </template>
 
 <script>

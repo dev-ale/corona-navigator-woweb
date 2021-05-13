@@ -23,6 +23,9 @@ export default {
     this.calculateScore()
   },
   methods: {
+    /*
+    * calculate the total incident score and get the average and round it.
+    */
     calculateScore() {
       let count = 0;
       let score = 0;
