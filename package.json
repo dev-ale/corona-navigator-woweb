@@ -15,6 +15,7 @@
     "core-js": "^3.6.5",
     "dotenv": "^8.2.0",
     "lottie-vuejs": "^0.4.0",
+    "mobile-device-detect": "^0.4.3",
     "path": "^0.12.7",
     "register-service-worker": "^1.7.1",
     "serve-static": "^1.14.1",

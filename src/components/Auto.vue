@@ -34,7 +34,7 @@
             :destination="destionation"
             :location="location"
             @getDirections="getDirections"
-            :search="search"
+
         />
       </GmapMap>
       <v-row v-if="start && end">
@@ -56,7 +56,7 @@
               </v-list-item-title>
               <v-list-item-subtitle>
                 <v-chip v-if="!isNaN(getIncident(stoppoint))" color="primary" dark>{{ Math.round(getIncident(stoppoint)) }}</v-chip>
-                <v-chip v-if="isNaN(getIncident(stoppoint))" outlined color="primary">{{ getIncident(stoppointl) }}</v-chip>
+                <v-chip v-if="isNaN(getIncident(stoppoint))" outlined color="primary">{{ getIncident(stoppoint) }}</v-chip>
               </v-list-item-subtitle>
             </v-list-item>
 

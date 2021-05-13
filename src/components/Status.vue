@@ -11,13 +11,13 @@
 
               <v-list-item>
                 <v-list-item-title>
-                  <h3>Kantone</h3>
+                  <h4>Kantone</h4>
+                </v-list-item-title>
+                <v-list-item-title v-if="!$vuetify.breakpoint.mobile">
+                  <h4>Gemeinden</h4>
                 </v-list-item-title>
                 <v-list-item-title>
-                  <h3>Gemeinden</h3>
-                </v-list-item-title>
-                <v-list-item-title>
-                  <h3>14-Tage-Inzidenz</h3>
+                  <h4>14-Tage-Inzidenz</h4>
                 </v-list-item-title>
               </v-list-item>
 
@@ -28,14 +28,14 @@
                 <v-list-item-title>
                   <h3> {{ canton }}</h3>
                 </v-list-item-title>
-                <v-list-item-title>
+                <v-list-item-title v-if="!$vuetify.breakpoint.mobile">
                   <h3>{{ getCitiesForCanton(canton) }} ({{ getTotalCitiesForCanton(canton) }})</h3>
                 </v-list-item-title>
                 <v-list-item-subtitle>
                   <v-chip dark color="primary">
                     {{ getIncidencesForCanton(canton) }}
                   </v-chip>
-                  <v-chip class="ml-5" small outlined color="primary">
+                  <v-chip v-if="!$vuetify.breakpoint.mobile" class="ml-5" small outlined color="primary">
                     {{ getDateForCanton(canton) | moment("from", "now") }}
                   </v-chip>
                 </v-list-item-subtitle>
@@ -44,8 +44,8 @@
           </v-card>
         </div>
         <br>
-        <div v-if="showDetails.name">
-          <v-card width="400">
+        <div hidden v-if="showDetails.name">
+          <v-card width="200">
             <v-row>
               <v-col align="center">
                 <h1>{{ showDetails.name }}</h1>
@@ -64,7 +64,10 @@
           </v-card>
         </div>
       </v-col>
-      <v-col cols="8" xs="12" md="7" align="center">
+      <v-col v-if="!$vuetify.breakpoint.mobile" cols="8" xs="12" md="6" align="center">
+        <SwitzerlandMap @select-canton="selectCanton"/>
+      </v-col>
+      <v-col v-if="$vuetify.breakpoint.mobile" cols="12" xs="12" md="12" align="center">
         <SwitzerlandMap @select-canton="selectCanton"/>
       </v-col>
     </v-row>
@@ -73,6 +76,7 @@
 
 <script>
 import SwitzerlandMap from "@/components/SwitzerlandMap";
+import { isMobileOnly } from 'mobile-device-detect';
 export default {
   name: "Status",
   components: {
@@ -83,6 +87,7 @@ export default {
   },
   data: () => {
     return {
+      isMobileOnly,
       totalCities: {
         AG: 210,
         BE: 339,

@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row justify="center">
     <v-col align="center">
       <LottieAnimation
           :loop="false"
