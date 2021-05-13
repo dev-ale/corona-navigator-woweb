@@ -160,19 +160,19 @@ export default {
     * calculate Opacity for each canton MAX Value 500 Min Value 0
     */
     calculateOpacity() {
-      this.opacity.baselstadt = this.normalize(this.getIncidencesForCanton('BS'),500, 0);
-      this.opacity.baselland = this.normalize(this.getIncidencesForCanton('BL'),500, 0);
-      this.opacity.aargau = this.normalize(this.getIncidencesForCanton('AG'),500, 0);
-      this.opacity.bern = this.normalize(this.getIncidencesForCanton('BE'),500, 0);
-      this.opacity.fribourg = this.normalize(this.getIncidencesForCanton('FR'),500, 0);
-      this.opacity.graubuenden = this.normalize(this.getIncidencesForCanton('GR'),500, 0);
-      this.opacity.luzern = this.normalize(this.getIncidencesForCanton('LU'),500, 0);
-      this.opacity.stgallen = this.normalize(this.getIncidencesForCanton('SG'),500, 0);
-      this.opacity.solothurn = this.normalize(this.getIncidencesForCanton('SO'),500, 0);
-      this.opacity.schwyz = this.normalize(this.getIncidencesForCanton('SZ'),500, 0);
-      this.opacity.thurgau = this.normalize(this.getIncidencesForCanton('TG'),500, 0);
-      this.opacity.zug = this.normalize(this.getIncidencesForCanton('ZG'),500, 0);
-      this.opacity.zurich = this.normalize(this.getIncidencesForCanton('ZH'),500, 0);
+      this.opacity.baselstadt = this.normalize(this.getIncidencesForCanton('BS'),600, 0);
+      this.opacity.baselland = this.normalize(this.getIncidencesForCanton('BL'),600, 0);
+      this.opacity.aargau = this.normalize(this.getIncidencesForCanton('AG'),600, 0);
+      this.opacity.bern = this.normalize(this.getIncidencesForCanton('BE'),600, 0);
+      this.opacity.fribourg = this.normalize(this.getIncidencesForCanton('FR'),600, 0);
+      this.opacity.graubuenden = this.normalize(this.getIncidencesForCanton('GR'),600, 0);
+      this.opacity.luzern = this.normalize(this.getIncidencesForCanton('LU'),600, 0);
+      this.opacity.stgallen = this.normalize(this.getIncidencesForCanton('SG'),600, 0);
+      this.opacity.solothurn = this.normalize(this.getIncidencesForCanton('SO'),600, 0);
+      this.opacity.schwyz = this.normalize(this.getIncidencesForCanton('SZ'),600, 0);
+      this.opacity.thurgau = this.normalize(this.getIncidencesForCanton('TG'),600, 0);
+      this.opacity.zug = this.normalize(this.getIncidencesForCanton('ZG'),600, 0);
+      this.opacity.zurich = this.normalize(this.getIncidencesForCanton('ZH'),600, 0);
       console.log(this.opacity)
     },
     /*
