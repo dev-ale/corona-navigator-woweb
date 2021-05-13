@@ -8,7 +8,6 @@
           <br>
           <v-card>
             <v-list >
-
               <v-list-item>
                 <v-list-item-title>
                   <h4>Kantone</h4>
@@ -64,9 +63,11 @@
           </v-card>
         </div>
       </v-col>
+<!--      Desktop Version-->
       <v-col v-if="!$vuetify.breakpoint.mobile" cols="8" xs="12" md="6" align="center">
         <SwitzerlandMap @select-canton="selectCanton"/>
       </v-col>
+<!--      Mobile Version-->
       <v-col v-if="$vuetify.breakpoint.mobile" cols="12" xs="12" md="12" align="center">
         <SwitzerlandMap @select-canton="selectCanton"/>
       </v-col>

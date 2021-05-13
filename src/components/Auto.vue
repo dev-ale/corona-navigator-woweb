@@ -16,6 +16,11 @@
           </v-col>
         </v-row>
       </v-col>
+      <v-row v-if="!start && !end">
+        <v-col align="center">
+          <h2>Bitte geben Sie einen Start und Endort ein.</h2>
+        </v-col>
+      </v-row>
       <v-row>
         <v-col align="center">
           <h4 v-if="duration1Text !== ''">{{ duration1Text }}</h4>
