@@ -3,14 +3,14 @@ import json
 from jsonschema import validate
 
 schema_incidence = {
-    "type":"array",
+    "type": "array",
     "items": {
-        "type" : "object",
-        "properties" : {
-            "canton" : {"type" : "string"},
-            "date" : {"type" : "string"},
-            "incident" : {"type" : "number"},
-            "name" : {"type" : "string"}
+        "type": "object",
+        "properties": {
+            "canton": {"type": "string"},
+            "date": {"type": "string"},
+            "incident": {"type": "number"},
+            "name": {"type": "string"}
         }
     }
 }
@@ -25,6 +25,7 @@ def test_get_incidences_from_db(client):
     response = client.get("/api/incidences")
     body = response.json
     assert len(body) == 2
+
 
 def test_get_incidences_and_check_schema(client):
     response = client.get("/api/incidences")
