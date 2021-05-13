@@ -15,6 +15,7 @@
             <v-text-field solo clearable v-model="end" placeholder="bis"></v-text-field>
           </v-col>
         </v-row>
+
       </v-col>
       <v-row v-if="!start && !end">
         <v-col align="center">
@@ -101,7 +102,8 @@ export default {
     startLocation: {lat: null, lng: null},
     endLocation: {lat: null, lng: null},
     duration1Text: "",
-    duration2Text: ""
+    duration2Text: "",
+
   }),
 
   computed: {
