@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <ZugInput @search="search"/>
+
     <v-row v-if="!notFound && !stations && !loading">
       <v-col align="center">
         <h2>Bitte geben Sie einen Start und Endort ein.</h2>
@@ -8,8 +9,11 @@
     </v-row>
 
     <ZugStationNotFound v-if="notFound" :message="message"/>
+
     <ZugStations v-if="!loading" :stations="stations"/>
+
     <Score v-if="stations" :stations="stations"/>
+
     <ProgressLoader v-if="loading"/>
   </v-container>
 </template>
@@ -23,13 +27,19 @@ import ZugStationNotFound from "@/components/ZugStationNotFound";
 
 export default {
   name: "Zug",
-  components: {ZugStationNotFound, ZugInput, ZugStations, ProgressLoader, Score},
+  components: {
+    ZugStationNotFound,
+    ZugInput,
+    ZugStations,
+    ProgressLoader,
+    Score
+  },
   props: {
     incidences: Array,
   },
   data: () => ({
-    from: "Pratteln",
-    to: "Basel",
+    from: "",
+    to: "",
     loading: false,
     stations: null,
     order: [],
@@ -43,9 +53,11 @@ export default {
 
   methods: {
 
-    // Calculalate Incidents from city name
+    /*
+    * Calculate  Incident for specific city and return the incident value
+    */
     getIncident(n) {
-      let name = n.charAt(0).toUpperCase() + n.slice(1);
+      const name = n.charAt(0).toUpperCase() + n.slice(1);
       if (this.incidences.find(it => it.name === name)) {
         const city = this.incidences.find(it => it.name === name);
         return (city.incident)
@@ -54,7 +66,11 @@ export default {
       }
 
     },
-    // Transport Opendata API Call
+
+    /*
+    * Open Transport API Call to get Train Stations between Start and Stop
+    */
+    //Todo: @Pascal bitte noch Funktionsvariabeln ändern und Function beschriften
     search(from, to) {
       this.notFound = false
       this.loading = true
@@ -95,7 +111,6 @@ export default {
                     .then(response => {
                       let dorf;
                       let canton;
-
                       response.data.results[0].address_components.forEach(x => {
                             if (x.types.includes("locality")) {
                               if (x.long_name.includes("Sankt")) {
@@ -122,14 +137,12 @@ export default {
                 let somethingnew = something.filter(function (el) {
                   return el != null;
                 })
-
                 somethingnew = somethingnew.filter( (value, index, self) => {
                   if(self[index + 1] !== undefined) {
                       return self[index+1].name !== value.name;
                   }else return true;
                 });
                 this.stations = [...new Set(somethingnew)];
-
                 this.loading = false;
               });
             }
@@ -138,9 +151,7 @@ export default {
             console.log(e)
           })
     }
-  },
-
-
+  }
 }
 </script>
 

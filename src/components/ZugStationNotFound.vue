@@ -1,7 +1,12 @@
 <template>
   <v-row>
     <v-col align="center">
-      <LottieAnimation :loop="false" :width="300" :height="300" path="animations/not-found.json"/>
+      <LottieAnimation
+          :loop="false"
+          :width="300"
+          :height="300"
+          path="animations/not-found.json"
+      />
       <h2>{{ message }}</h2>
     </v-col>
   </v-row>
@@ -17,7 +22,6 @@ name: "ZugStationNotFound",
     message: String,
   },
 }
-
 </script>
 
 <style scoped>
