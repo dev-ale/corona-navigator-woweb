@@ -6,8 +6,8 @@
           <h3>Gemeinden: {{ this.incidences.length }}</h3>
           <h3>Kantone: {{ this.getCantons().length }} / 13</h3>
           <br>
-          <v-card>
-            <v-list >
+          <v-card v-if="!showDetails.name">
+            <v-list>
               <v-list-item>
                 <v-list-item-title>
                   <h4>Kantone</h4>
@@ -41,28 +41,31 @@
               </v-list-item>
             </v-list>
           </v-card>
+          <div v-if="showDetails.name">
+            <v-card >
+              <v-row>
+                <v-col align="center">
+                  <h1>{{ showDetails.name }}</h1>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col align="center">
+                  <img width="20%" :src="'img/cantons/' + showDetails.name + '.jpg'">
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col align="center">
+                  <h4>14 Tage Inzindenz</h4>
+                  <br>
+                  <v-chip large v-if="showDetails.incident" dark color="primary">{{showDetails.incident}}</v-chip>
+                </v-col>
+              </v-row>
+            </v-card>
+          </div>
         </div>
         <br>
-        <div v-if="showDetails.name">
-          <v-card width="200">
-            <v-row>
-              <v-col align="center">
-                <h1>{{ showDetails.name }}</h1>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col align="center">
-                <img width="10%" :src="'img/cantons/' + showDetails.name + '.jpg'">
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col align="center">
-                <v-chip x-large v-if="showDetails.incident" dark color="primary">{{showDetails.incident}}</v-chip>
-              </v-col>
-            </v-row>
-          </v-card>
-        </div>
       </v-col>
+
 <!--      Desktop Version-->
       <v-col v-if="!$vuetify.breakpoint.mobile" cols="8" xs="12" md="6" align="center">
         <SwitzerlandMap @select-canton="selectCanton" :opacity="opacity"/>
@@ -167,7 +170,7 @@ export default {
       console.log(this.opacity)
     },
     normalize(val, max, min) {
-      return (val - min) / (max - min);
+      return (val - min) / (max - min) + 0.3;
     },
 
     /*
