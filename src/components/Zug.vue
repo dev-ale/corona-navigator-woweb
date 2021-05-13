@@ -12,7 +12,7 @@
 
     <ZugStations v-if="!loading" :stations="stations"/>
 
-    <Score v-if="!notFound && !loading" :stations="stations"/>
+    <Score v-if="!notFound && !loading && stations" :stations="stations"/>
 
     <ProgressLoader v-if="loading"/>
   </v-container>
