@@ -52,7 +52,7 @@
             </v-row>
             <v-row>
               <v-col align="center">
-                <img width="20%" :src="'img/cantons/' + showDetails.name + '.jpg'">
+                <img width="10%" :src="'img/cantons/' + showDetails.name + '.jpg'">
               </v-col>
             </v-row>
             <v-row>
