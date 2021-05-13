@@ -38,3 +38,14 @@ def test_get_incidences_and_check_schema(client):
     validate(instance=body, schema=schema_incidence)
     assert response.headers['Content-Type'] == "application/json"
     assert len(body) == 2
+
+
+def test_get_incidences_and_check_entries(client):
+    response = client.get("/api/incidences")
+    body = response.json
+    body_zh = body[0]
+    body_bl = body[1]
+    assert body_zh['canton'] == 'ZH'
+    assert body_zh['name'] == 'Aeugst am Albis'
+    assert body_bl['canton'] == 'BL'
+    assert body_bl['name'] == 'Oberwil'
