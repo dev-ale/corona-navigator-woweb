@@ -20,6 +20,7 @@ def test_if_api_is_reachable(client):
     response = client.get("/api/incidences")
     assert response.status_code == 200
 
+
 def test_wrong_uri_should_return_404(client):
     response = client.get("/api/incidenct")
     assert response.status_code == 404
