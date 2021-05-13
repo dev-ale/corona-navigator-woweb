@@ -26,9 +26,10 @@
 
       <template v-slot:extension>
         <v-tabs align-with-title>
-          <v-tab @click="view='zug'">Zug</v-tab>
-          <v-tab @click="view='auto'">Auto</v-tab>
-          <v-tab @click="view='status'">Status</v-tab>
+          <v-tab @click="view='zug'"><v-icon class="mr-5">mdi-train</v-icon>Zug</v-tab>
+          <v-tab @click="view='auto'"><v-icon class="mr-5">mdi-car</v-icon>Auto</v-tab>
+          <v-spacer></v-spacer>
+          <v-tab class="mr-10" @click="view='status'"><v-icon class="mr-5">mdi-information-outline</v-icon>Status</v-tab>
         </v-tabs>
       </template>
     </v-app-bar>

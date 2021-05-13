@@ -16,7 +16,7 @@
 import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 
 export default {
-name: "ZugStationNotFound",
+name: "NotFound",
   components: { LottieAnimation },
   props: {
     message: String,
