@@ -50,7 +50,9 @@
               </v-row>
               <v-row>
                 <v-col align="center">
-                  <img width="20%" :src="'img/cantons/' + showDetails.name + '.jpg'">
+                  <v-avatar size="100">
+                    <img  :src="'img/cantons/' + showDetails.name + '.jpg'">
+                  </v-avatar>
                 </v-col>
               </v-row>
               <v-row>
@@ -153,22 +155,30 @@ export default {
       cantons = [...new Set(cantons)];
       return cantons;
     },
+
+    /*
+    * calculate Opacity for each canton MAX Value 500 Min Value 0
+    */
     calculateOpacity() {
-      this.opacity.baselstadt = this.normalize(this.getIncidencesForCanton('BS'),500, 0) * 1.5;
-      this.opacity.baselland = this.normalize(this.getIncidencesForCanton('BL'),500, 0) * 1.5;
-      this.opacity.aargau = this.normalize(this.getIncidencesForCanton('AG'),500, 0) * 1.5;
-      this.opacity.bern = this.normalize(this.getIncidencesForCanton('BE'),500, 0) * 1.5;
-      this.opacity.fribourg = this.normalize(this.getIncidencesForCanton('FR'),500, 0) * 1.5;
-      this.opacity.graubuenden = this.normalize(this.getIncidencesForCanton('GR'),500, 0) * 1.5;
-      this.opacity.luzern = this.normalize(this.getIncidencesForCanton('LU'),500, 0) * 1.5;
-      this.opacity.stgallen = this.normalize(this.getIncidencesForCanton('SG'),500, 0) * 1.5;
-      this.opacity.solothurn = this.normalize(this.getIncidencesForCanton('SO'),500, 0) * 1.5;
-      this.opacity.schwyz = this.normalize(this.getIncidencesForCanton('SZ'),500, 0) * 1.5;
-      this.opacity.thurgau = this.normalize(this.getIncidencesForCanton('TG'),500, 0) * 1.5;
-      this.opacity.zug = this.normalize(this.getIncidencesForCanton('ZG'),500, 0) * 1.5;
-      this.opacity.zurich = this.normalize(this.getIncidencesForCanton('ZH'),500, 0) * 1.5;
+      this.opacity.baselstadt = this.normalize(this.getIncidencesForCanton('BS'),500, 0);
+      this.opacity.baselland = this.normalize(this.getIncidencesForCanton('BL'),500, 0);
+      this.opacity.aargau = this.normalize(this.getIncidencesForCanton('AG'),500, 0);
+      this.opacity.bern = this.normalize(this.getIncidencesForCanton('BE'),500, 0);
+      this.opacity.fribourg = this.normalize(this.getIncidencesForCanton('FR'),500, 0);
+      this.opacity.graubuenden = this.normalize(this.getIncidencesForCanton('GR'),500, 0);
+      this.opacity.luzern = this.normalize(this.getIncidencesForCanton('LU'),500, 0);
+      this.opacity.stgallen = this.normalize(this.getIncidencesForCanton('SG'),500, 0);
+      this.opacity.solothurn = this.normalize(this.getIncidencesForCanton('SO'),500, 0);
+      this.opacity.schwyz = this.normalize(this.getIncidencesForCanton('SZ'),500, 0);
+      this.opacity.thurgau = this.normalize(this.getIncidencesForCanton('TG'),500, 0);
+      this.opacity.zug = this.normalize(this.getIncidencesForCanton('ZG'),500, 0);
+      this.opacity.zurich = this.normalize(this.getIncidencesForCanton('ZH'),500, 0);
       console.log(this.opacity)
     },
+    /*
+    * Helper function to calc a normalized Number between 0-1
+    * correct it with + 0.3 because opacity would be to low
+    */
     normalize(val, max, min) {
       return (val - min) / (max - min) + 0.3;
     },
