@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row justify="center">
     <v-col align="center">
       <LottieAnimation
           :loop="false"
@@ -16,7 +16,7 @@
 import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 
 export default {
-name: "ZugStationNotFound",
+name: "NotFound",
   components: { LottieAnimation },
   props: {
     message: String,

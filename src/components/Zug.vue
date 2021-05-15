@@ -8,11 +8,11 @@
       </v-col>
     </v-row>
 
-    <ZugStationNotFound v-if="notFound" :message="message"/>
+    <NotFound v-if="notFound" :message="message"/>
 
     <ZugStations v-if="!loading" :stations="stations"/>
 
-    <Score v-if="stations" :stations="stations"/>
+    <Score v-if="!notFound && !loading && stations" :stations="stations"/>
 
     <ProgressLoader v-if="loading"/>
   </v-container>
@@ -23,12 +23,12 @@ import Score from "@/components/Score";
 import ProgressLoader from "@/components/ProgressLoader";
 import ZugStations from "@/components/Zug-Stations";
 import ZugInput from "@/components/Zug-Input";
-import ZugStationNotFound from "@/components/ZugStationNotFound";
+import NotFound from "@/components/NotFound";
 
 export default {
   name: "Zug",
   components: {
-    ZugStationNotFound,
+    NotFound,
     ZugInput,
     ZugStations,
     ProgressLoader,
@@ -83,9 +83,15 @@ export default {
             let something = [];
             this.order = [];
             this.stations = [];
-
+            if (!from || !to) {
+              console.log("empty fields")
+              this.notFound = true
+              this.stations = []
+              this.message = 'Please enter a valid start and stop position'
+              this.loading = false
+            }
             // Check if response is empty
-            if (response.data.connections.length === 0) {
+            else if (response.data.connections.length === 0) {
               this.notFound = true
               this.stations = []
               this.message = 'We could not find a route for your start and end position'
@@ -150,6 +156,7 @@ export default {
           .catch(e => {
             console.log(e)
           })
+      console.log(this.stations);
     }
   }
 }

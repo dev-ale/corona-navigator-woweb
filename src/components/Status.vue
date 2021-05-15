@@ -6,18 +6,17 @@
           <h3>Gemeinden: {{ this.incidences.length }}</h3>
           <h3>Kantone: {{ this.getCantons().length }} / 13</h3>
           <br>
-          <v-card>
-            <v-list >
-
+          <v-card v-if="!showDetails.name">
+            <v-list>
               <v-list-item>
                 <v-list-item-title>
-                  <h3>Kantone</h3>
+                  <h4>Kantone</h4>
+                </v-list-item-title>
+                <v-list-item-title v-if="!$vuetify.breakpoint.mobile">
+                  <h4>Gemeinden</h4>
                 </v-list-item-title>
                 <v-list-item-title>
-                  <h3>Gemeinden</h3>
-                </v-list-item-title>
-                <v-list-item-title>
-                  <h3>14-Tage-Inzidenz</h3>
+                  <h4>14-Tage-Inzidenz</h4>
                 </v-list-item-title>
               </v-list-item>
 
@@ -28,43 +27,53 @@
                 <v-list-item-title>
                   <h3> {{ canton }}</h3>
                 </v-list-item-title>
-                <v-list-item-title>
+                <v-list-item-title v-if="!$vuetify.breakpoint.mobile">
                   <h3>{{ getCitiesForCanton(canton) }} ({{ getTotalCitiesForCanton(canton) }})</h3>
                 </v-list-item-title>
                 <v-list-item-subtitle>
                   <v-chip dark color="primary">
                     {{ getIncidencesForCanton(canton) }}
                   </v-chip>
-                  <v-chip class="ml-5" small outlined color="primary">
+                  <v-chip v-if="!$vuetify.breakpoint.mobile" class="ml-5" small outlined color="primary">
                     {{ getDateForCanton(canton) | moment("from", "now") }}
                   </v-chip>
                 </v-list-item-subtitle>
               </v-list-item>
             </v-list>
           </v-card>
+          <div v-if="showDetails.name">
+            <v-card >
+              <v-row>
+                <v-col align="center">
+                  <h1>{{ showDetails.name }}</h1>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col align="center">
+                  <v-avatar size="100">
+                    <img  :src="'img/cantons/' + showDetails.name + '.jpg'">
+                  </v-avatar>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col align="center">
+                  <h4>14 Tage Inzindenz</h4>
+                  <br>
+                  <v-chip large v-if="showDetails.incident" dark color="primary">{{showDetails.incident}}</v-chip>
+                </v-col>
+              </v-row>
+            </v-card>
+          </div>
         </div>
         <br>
-        <div v-if="showDetails.name">
-          <v-card width="400">
-            <v-row>
-              <v-col align="center">
-                <h1>{{ showDetails.name }}</h1>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col align="center">
-                <img width="20%" :src="'img/cantons/' + showDetails.name + '.jpg'">
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col align="center">
-                <v-chip x-large v-if="showDetails.incident" dark color="primary">{{showDetails.incident}}</v-chip>
-              </v-col>
-            </v-row>
-          </v-card>
-        </div>
       </v-col>
-      <v-col cols="8" xs="12" md="7" align="center">
+
+<!--      Desktop Version-->
+      <v-col v-if="!$vuetify.breakpoint.mobile" cols="8" xs="12" md="6" align="center">
+        <SwitzerlandMap @select-canton="selectCanton" :opacity="opacity"/>
+      </v-col>
+<!--      Mobile Version-->
+      <v-col v-if="$vuetify.breakpoint.mobile" cols="12" xs="12" md="12" align="center">
         <SwitzerlandMap @select-canton="selectCanton"/>
       </v-col>
     </v-row>
@@ -101,13 +110,28 @@ export default {
       showDetails: {
         name: null,
         incident: null
+      },
+      opacity: {
+        baselstadt: null,
+        baselland: null,
+        aargau: null,
+        bern:null,
+        fribourg: null,
+        graubuenden: null,
+        luzern: null,
+        stgallen: null,
+        solothurn: null,
+        schwyz: null,
+        thurgau: null,
+        zug: null,
+        zurich: null,
       }
     }
 
   },
   mounted() {
     this.getCantons();
-
+    this.calculateOpacity();
   },
   methods: {
 
@@ -130,6 +154,33 @@ export default {
       });
       cantons = [...new Set(cantons)];
       return cantons;
+    },
+
+    /*
+    * calculate Opacity for each canton MAX Value 500 Min Value 0
+    */
+    calculateOpacity() {
+      this.opacity.baselstadt = this.normalize(this.getIncidencesForCanton('BS'),600, 0);
+      this.opacity.baselland = this.normalize(this.getIncidencesForCanton('BL'),600, 0);
+      this.opacity.aargau = this.normalize(this.getIncidencesForCanton('AG'),600, 0);
+      this.opacity.bern = this.normalize(this.getIncidencesForCanton('BE'),600, 0);
+      this.opacity.fribourg = this.normalize(this.getIncidencesForCanton('FR'),600, 0);
+      this.opacity.graubuenden = this.normalize(this.getIncidencesForCanton('GR'),600, 0);
+      this.opacity.luzern = this.normalize(this.getIncidencesForCanton('LU'),600, 0);
+      this.opacity.stgallen = this.normalize(this.getIncidencesForCanton('SG'),600, 0);
+      this.opacity.solothurn = this.normalize(this.getIncidencesForCanton('SO'),600, 0);
+      this.opacity.schwyz = this.normalize(this.getIncidencesForCanton('SZ'),600, 0);
+      this.opacity.thurgau = this.normalize(this.getIncidencesForCanton('TG'),600, 0);
+      this.opacity.zug = this.normalize(this.getIncidencesForCanton('ZG'),600, 0);
+      this.opacity.zurich = this.normalize(this.getIncidencesForCanton('ZH'),600, 0);
+      console.log(this.opacity)
+    },
+    /*
+    * Helper function to calc a normalized Number between 0-1
+    * correct it with + 0.3 because opacity would be to low
+    */
+    normalize(val, max, min) {
+      return (val - min) / (max - min) + 0.3;
     },
 
     /*

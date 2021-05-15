@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col cols="4">
+    <v-col sm="8" xs="4" md="6" cols="12">
       <v-list dense v-for="station of stations" :key="station.name">
         <v-list-item>
           <v-list-item-title>
@@ -8,7 +8,7 @@
           </v-list-item-title>
           <v-list-item-subtitle>
             <v-chip v-if="!isNaN(station.incident)"color="primary" dark>{{ Math.round(station.incident) }}</v-chip>
-            <v-chip v-if="isNaN(station.incident)" outlined color="primary" dark>{{ station.incident }}</v-chip>
+            <v-chip small v-if="isNaN(station.incident)" outlined color="primary" dark>{{ station.incident }}</v-chip>
           </v-list-item-subtitle>
         </v-list-item>
       </v-list>
@@ -25,6 +25,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>

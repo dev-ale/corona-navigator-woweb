@@ -12,23 +12,51 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn
-          icon
-          href="https://github.com/dev-ale/corona-navigator-woweb"
-          target="_blank"
+      <v-menu
+          bottom
+          left
       >
-        <v-icon>mdi-github</v-icon>
-      </v-btn>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+              dark
+              icon
+              v-bind="attrs"
+              v-on="on"
+          >
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
 
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
+        <v-list>
+          <v-list-item><h4>Repositories</h4></v-list-item>
+          <v-list-item href="https://github.com/dev-ale/corona-navigator-woweb" target="_blank">
+            <v-list-item-avatar>
+              <v-icon size="30">mdi-github</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>Frontend & Backend</v-list-item-title>
+              <v-list-item-subtitle>Github</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item href="https://gitlab.fhnw.ch/wodss-wowm-group-bs-bl/webservice-bl-bs" target="_blank">
+            <v-list-item-avatar>
+              <v-icon size="30">mdi-gitlab</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>BS / BL Kantonsservice</v-list-item-title>
+              <v-list-item-subtitle>Gitlab</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+
+        </v-list>
+      </v-menu>
 
       <template v-slot:extension>
         <v-tabs align-with-title>
-          <v-tab @click="view='zug'">Zug</v-tab>
-          <v-tab @click="view='auto'">Auto</v-tab>
-          <v-tab @click="view='status'">Status</v-tab>
+          <v-tab @click="view='zug'"><v-icon class="mr-5">mdi-train</v-icon>Zug</v-tab>
+          <v-tab @click="view='auto'"><v-icon class="mr-5">mdi-car</v-icon>Auto</v-tab>
+          <v-spacer></v-spacer>
+          <v-tab class="mr-10" @click="view='status'"><v-icon class="mr-5">mdi-information-outline</v-icon>Status</v-tab>
         </v-tabs>
       </template>
     </v-app-bar>
