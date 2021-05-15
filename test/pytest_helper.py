@@ -1,13 +1,6 @@
-import sys
-import os
 import pytest
-
-ROOT_DIR = os.path.dirname(os.path.abspath('app.py'))  # TODO, find better solution
-sys.path.append(ROOT_DIR)
 import app
-
 from flask_pymongo import PyMongo
-
 
 @pytest.fixture
 def client():

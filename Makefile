@@ -11,5 +11,5 @@ import:
 tests:
 	pip install -r requirements.txt
 	docker-compose up -d
-	pytest
+	python -m pytest
 	docker-compose down
