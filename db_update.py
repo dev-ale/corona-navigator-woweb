@@ -15,6 +15,7 @@ def update_db():
     for canton in incidences.values():
         for incidence in canton:
             try:
+                if incidence['incidence'] is None: continue
                 mongo.db.incidences.update(
                     {
                         'bfsNr': incidence['bfsNr'],
@@ -45,7 +46,7 @@ def update_db():
                     },
                     {
                         '$set': {
-                            'name': municipality['name'],
+                            'name': re.sub(r'\s\(\w{2}\)$', '', municipality['name']),
                             'canton': municipality['canton'],
                             'area': municipality['area'],
                             'population': municipality['population']
