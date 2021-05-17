@@ -42,7 +42,7 @@ export default {
     to: "",
     loading: false,
     stations: null,
-    order: [],
+    filteredCoordinates: [],
     score: null,
     message: null,
     notFound: false,
@@ -66,7 +66,18 @@ export default {
       }
 
     },
-
+     /*
+    * correcting some found issues with wrong naming 
+    * example: Googe api returns "Biel", our database has "Biel/Bienne" deposited 
+    * this function expans "Biel" with "/Bienne"
+    */
+    correctCityName(city){
+      if (city.long_name.includes("Sankt")) {
+        return city.long_name.replace("Sankt", "St.")
+      }else if(city.long_name.includes("Biel")){
+        return city.long_name.concat("/Bienne")
+      }else {return city.long_name;}
+    },
     /*
     * Open Transport API Call to get Train Stations between Start and Stop
     */
@@ -80,8 +91,8 @@ export default {
           .then(response => {
             console.log(response)
             let sections = [];
-            let something = [];
-            this.order = [];
+            let stops = [];
+            this.filteredCoordinates = [];
             this.stations = [];
             if (!from || !to) {
               console.log("empty fields")
@@ -97,58 +108,71 @@ export default {
               this.message = 'We could not find a route for your start and end position'
               this.loading = false
             } else {
+              //get coordinates of stops from respond
               sections = response.data.connections[0].sections;
-              let newlist = sections.map(x => {
+              let coordinates = sections.map(x => {
                 if (x.journey && x.journey.passList) {
                   return x.journey.passList.map(y => y.station.coordinate)
                 } else {
                   return null;
                 }
               });
-              newlist.forEach(l => {
+
+              //filter coordinate and pushed in one dimensional array
+              coordinates.forEach(l => {
                 if (l) {
-                  l.forEach(e => this.order.push((e)))
+                  l.forEach(e => this.filteredCoordinates.push((e)))
                 }
               });
+
+              //array for promises from google api get request
               let promises = [];
-              this.order.forEach((c,index) => {
+              //search search for Cityname and Canton with google api
+              this.filteredCoordinates.forEach((c,index) => {
+                //push every get rquest in promises array
                 promises.push(
+                  //actual get request to google api
                  axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + c.x + "," + c.y + "&key=" +this.apikey )
                     .then(response => {
-                      let dorf;
+                      //placeholder for cityname and canton
+                      let cityname;
                       let canton;
+                      //Set placeholder cityname and canton
                       response.data.results[0].address_components.forEach(x => {
                             if (x.types.includes("locality")) {
-                              if (x.long_name.includes("Sankt")) {
-                                dorf = x.long_name.replace("Sankt", "St.")
-                              }else if(x.long_name.includes("Biel")){
-                                dorf = x.long_name.concat("/Bienne")
-                              }else {dorf = x.long_name;}
+                              //correcting naming from Google api
+                              cityname =this.correctCityName(x);
                             } else if (x.types.includes("administrative_area_level_1")) {
                               canton = x.short_name;
                             }
                           }
                       )
-                      const d = this.incidences.find(v => v.name === dorf && v.canton === canton);
-                      if (d != undefined) {
-                        something[index] = ({name: d.name, incident: d.incident})
+                      //search for City in our database and fils array with cityname and the corrisponding incident
+                      const city = this.incidences.find(v => v.name === cityname && v.canton === canton);
+                      if (city != undefined) {
+                        stops[index] = ({name: city.name, incident: city.incident})
                       } else {
-                        something[index] = ({name: dorf, incident: "Keine Daten verfügbar"})
-                        console.log(dorf, canton)
+                        stops[index] = ({name: cityname, incident: "Keine Daten verfügbar"})
+                        //logs all city which weren't found in our database
+                        console.log(cityname, canton)
                       }
-                    })
+                    }).catch(e => console.log(e))
                 )
               });
+              //waits for all promises => so all stations are in array
               Promise.all(promises).then(() => {
-                let somethingnew = something.filter(function (el) {
+                //filters all null elements in array
+                stops = stops.filter((el) => {
                   return el != null;
                 })
-                somethingnew = somethingnew.filter( (value, index, self) => {
+                //filters multiple occurrences of city
+                stops = stops.filter( (value, index, self) => {
                   if(self[index + 1] !== undefined) {
                       return self[index+1].name !== value.name;
                   }else return true;
                 });
-                this.stations = [...new Set(somethingnew)];
+                //pushed everything as a set in stations array
+                this.stations = [...new Set(stops)];
                 this.loading = false;
               });
             }
