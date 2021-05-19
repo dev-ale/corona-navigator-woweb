@@ -6,7 +6,8 @@ logging.config.fileConfig('logging.ini')
 logger = logging.getLogger('LOGGER')
 errorLogger = logging.getLogger('ERROR-LOGGER')
 
-#puts data from datascraper into Database
+
+# puts data from datascrapper into Database
 def update_db():
     # import incidences
     logger.info("Getting data from datascrapper...")
