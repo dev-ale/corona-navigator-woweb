@@ -10,7 +10,7 @@
 
     <NotFound v-if="notFound" :message="message"/>
 
-    <ZugStations v-if="!loading" :stations="stations"/>
+    <ZugStations v-if="!loading && stations" :stations="stations" :departure="departure" :arrival="arrival"/>
 
     <Score v-if="!notFound && !loading && stations" :stations="stations"/>
 
@@ -46,7 +46,18 @@ export default {
     score: null,
     message: null,
     notFound: false,
-    apikey: process.env.VUE_APP_GOOGLEMAPS_API_KEY
+    apikey: process.env.VUE_APP_GOOGLEMAPS_API_KEY,
+
+    departure: {
+      name: null,
+      time: null,
+      type: null
+    },
+    arrival: {
+      name: null,
+      time: null,
+      type: null
+    },
   }),
   mounted() {
   },
@@ -67,8 +78,8 @@ export default {
 
     },
      /*
-    * correcting some found issues with wrong naming 
-    * example: Googe api returns "Biel", our database has "Biel/Bienne" deposited 
+    * correcting some found issues with wrong naming
+    * example: Googe api returns "Biel", our database has "Biel/Bienne" deposited
     * this function expans "Biel" with "/Bienne"
     */
     correctCityName(city){
@@ -90,6 +101,16 @@ export default {
       axios.get(`https://transport.opendata.ch/v1/connections?from=${from}&to=${to}&limit=1`)
           .then(response => {
             console.log(response)
+            this.departure.name = response.data.from.name;
+            this.departure.time = response.data.connections[0].from.departure.slice(11,16);
+            this.departure.type = response.data.connections[0].products[0];
+
+            this.arrival.name = response.data.to.name;
+            this.arrival.time = response.data.connections[0].to.arrival.slice(11,16);
+            const lastEl = response.data.connections[0].products.length -1;
+            console.log(lastEl);
+            this.arrival.type = response.data.connections[0].products[lastEl];
+
             let sections = [];
             let stops = [];
             this.filteredCoordinates = [];
@@ -187,5 +208,18 @@ export default {
 </script>
 
 <style scoped>
+  .anzeigetafel {
+    background-color: #2B42BF;
+    color: white;
+    padding: 10px;
+    padding-bottom: 30px;
+    padding-left: 20px;
+    border-color: #021749;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 6px;
+    font-family: 'Arial Black';
+  }
+
 
 </style>

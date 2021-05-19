@@ -8,6 +8,10 @@ export default new Vuetify({
         themes: {
             light: {
                 primary: '#c44348',
+                zugMain: '#2B42BF',
+                zugAcent: '#021749',
+                autoMain: '#c44348',
+                statusMain: '#43a047'
             },
         },
     },

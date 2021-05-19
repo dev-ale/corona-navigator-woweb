@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar
         app
-        color="primary"
+        :color="backgroundColor"
         dark
         flat
     >
@@ -61,7 +61,7 @@
       </template>
     </v-app-bar>
 
-    <v-main style="background-color: #c44348">
+    <v-main :class="backgroundColor">
       <div class="ma-12" >
         <v-card min-height="500px" height="100%">
           <v-card-text>
@@ -87,6 +87,9 @@ import Zug from "@/components/Zug";
 import Status from "@/components/Status";
 import Auto from "@/components/Auto";
 import ProgressLoader from "@/components/ProgressLoader";
+import vuetify from "@/plugins/vuetify";
+
+
 export default {
   name: 'App',
   components: {
@@ -98,53 +101,35 @@ export default {
   data: () => ({
     loading: false,
     view: "zug",
-    incidences: [
-        /*{
-      name: "Basel",
-      canton: "BS",
-      date: "2021-04-19",
-      incident: 272,
-    },
-      {
-        name: "Muttenz",
-        canton: "BS",
-        date: "2021-04-19",
-        incident: 222,
-      },
-      {
-        name: "Aesch",
-        canton: "BL",
-        date: "2021-04-19",
-        incident: 201,
-      },
-      {
-        name: "Pratteln",
-        canton: "BL",
-        date: "2021-04-19",
-        incident: 215,
-      },
-      {
-        name: "Solothurn",
-        canton: "SO",
-        date: "2021-04-19",
-        incident: 401,
-      }
-      */]
+    incidences: [],
+    bgColor: "zugMain",
   }),
   mounted() {
     this.getIncidences()
   },
+  computed: {
+    backgroundColor: function () {
+      if(this.view === "zug"){
+        return "zugMain";
+      }
+      if (this.view === "status") {
+        return "statusMain";
+      }
+      else {
+        return "autoMain";
+      }
+    }
+  },
   methods: {
     /*
-    * Loads JSON file with all needed Data from Backend, if its empty,
-    * sample Data is used.
+    * Loads JSON file with all needed Data from Backend
     */
     getIncidences() {
       this.loading = true;
       axios.get(`/api/incidences`)
           .then(response => {
             if (response.data.length > 0) {
-              console.log("Used real Data from DB")
+              console.log("Used data from DB")
               this.incidences = response.data
               this.loading = false;
             }else {

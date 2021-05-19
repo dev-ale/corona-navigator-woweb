@@ -57,7 +57,7 @@ name: "SwitzerlandMap",
     return {
       canton: "",
       neutral: "#AA3E3D",
-      selected: "#F9A825",
+      selected: "#43a047",
 
       baselstadt: null,
       baselland: null,
