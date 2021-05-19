@@ -101,11 +101,11 @@ export default {
         GR: 101,
         LU: 80,
         SG: 77,
-        SO: 107,
+        SO: 109,
         SZ: 30,
         TG: 80,
         ZG: 11,
-        ZH: 162
+        ZH: 160
       },
       showDetails: {
         name: null,
