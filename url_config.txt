@@ -34,3 +34,10 @@ sg_municipalities=https://86.119.43.232:8888/municipalities
 
 fr_incidences=https://service-devl.wodss12.cf/incidences
 fr_municipalities=https://service-devl.wodss12.cf/municipalities
+
+[certificates]
+blbs_certificate=certificates/certificate_blbs.pem
+fr_certificate=certificates/certificate_fr.pem
+lu_certificate=certificates/certificate_lu.pem
+sg_certificate=certificates/certificate_sg.pem
+sz_certificate=certificates/certificate_sz.pem
