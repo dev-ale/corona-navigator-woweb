@@ -115,7 +115,7 @@ export default {
         baselstadt: null,
         baselland: null,
         aargau: null,
-        bern:null,
+        bern: null,
         fribourg: null,
         graubuenden: null,
         luzern: null,
@@ -173,7 +173,6 @@ export default {
       this.opacity.thurgau = this.normalize(this.getIncidencesForCanton('TG'),600, 0);
       this.opacity.zug = this.normalize(this.getIncidencesForCanton('ZG'),600, 0);
       this.opacity.zurich = this.normalize(this.getIncidencesForCanton('ZH'),600, 0);
-      console.log(this.opacity)
     },
     /*
     * Helper function to calc a normalized Number between 0-1

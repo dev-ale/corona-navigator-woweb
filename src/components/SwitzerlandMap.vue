@@ -73,21 +73,6 @@ name: "SwitzerlandMap",
       zug: null,
       zurich: null,
 
-      // opacity: {
-      //   baselstadt: 0.8,
-      //   baselland: 0.8,
-      //   aargau: 0.8,
-      //   bern:0.8,
-      //   fribourg: 0.8,
-      //   graubuenden: 0.8,
-      //   luzern: 0.8,
-      //   stgallen: 0.8,
-      //   solothurn: 0.8,
-      //   schwyz: 0.8,
-      //   thurgau: 0.8,
-      //   zug: 0.8,
-      //   zurich: 0.8,
-      // }
     };
   },
   methods: {
