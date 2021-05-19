@@ -4,7 +4,7 @@ import os
 from flask_pymongo import PyMongo
 import logging.config
 
-app = Flask(__name__, static_folder='dist/',    static_url_path='/')
+app = Flask(__name__, static_folder='dist/', static_url_path='/')
 
 app.config['MONGO_URI'] = os.environ.get('MONGO_URI')
 mongo = PyMongo(app)
@@ -13,10 +13,12 @@ logging.config.fileConfig('logging.ini')
 logger = logging.getLogger('LOGGER')
 errorLogger = logging.getLogger('ERROR-LOGGER')
 
+
 # Set up the index route
 @app.route('/')
 def index():
     return app.send_static_file('index.html')
+
 
 @app.route('/api/incidences', methods=['GET'])
 def incidences():
