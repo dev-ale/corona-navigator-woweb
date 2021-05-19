@@ -23,7 +23,7 @@
               v-bind="attrs"
               v-on="on"
           >
-            <v-icon>mdi-dots-vertical</v-icon>
+            <v-icon>mdi-source-repository</v-icon>
           </v-btn>
         </template>
 
@@ -52,7 +52,7 @@
       </v-menu>
 
       <template v-slot:extension>
-        <v-tabs align-with-title>
+        <v-tabs v-if="!loading" align-with-title>
           <v-tab @click="view='zug'"><v-icon class="mr-5">mdi-train</v-icon>Zug</v-tab>
           <v-tab @click="view='auto'"><v-icon class="mr-5">mdi-car</v-icon>Auto</v-tab>
           <v-spacer></v-spacer>
@@ -65,12 +65,17 @@
       <div class="ma-12" >
         <v-card min-height="500px" height="100%">
           <v-card-text>
-            <Zug v-if="view==='zug'" :incidences="incidences"/>
-            <Auto v-if="view==='auto'" :incidences="incidences"/>
-            <Status v-if="view==='status'" :incidences="incidences"/>
+
+            <ProgressLoader :info-text="'Fetching data from database'" v-if="loading"/>
+            <div v-if="!loading">
+              <Zug v-if="view==='zug'" :incidences="incidences"/>
+              <Auto v-if="view==='auto'" :incidences="incidences"/>
+              <Status v-if="view==='status'" :incidences="incidences"/>
+            </div>
           </v-card-text>
         </v-card>
       </div>
+
     </v-main>
 
   </v-app>
@@ -81,16 +86,20 @@
 import Zug from "@/components/Zug";
 import Status from "@/components/Status";
 import Auto from "@/components/Auto";
+import ProgressLoader from "@/components/ProgressLoader";
 export default {
   name: 'App',
   components: {
+    ProgressLoader,
     Auto,
     Status,
     Zug
   },
   data: () => ({
+    loading: false,
     view: "zug",
-    incidences: [{
+    incidences: [
+        /*{
       name: "Basel",
       canton: "BS",
       date: "2021-04-19",
@@ -119,7 +128,8 @@ export default {
         canton: "SO",
         date: "2021-04-19",
         incident: 401,
-      }]
+      }
+      */]
   }),
   mounted() {
     this.getIncidences()
@@ -130,18 +140,20 @@ export default {
     * sample Data is used.
     */
     getIncidences() {
+      this.loading = false;
       axios.get(`/api/incidences`)
           .then(response => {
             if (response.data.length > 0) {
               console.log("Used real Data from DB")
               this.incidences = response.data
+              this.loading = true;
             }else {
               console.log("Could not load from DB")
-              console.log("Sample Data used")
             }
           })
           .catch(e => {
-            this.errors.push(e)
+
+            console.log(e)
           })
     }
   }
