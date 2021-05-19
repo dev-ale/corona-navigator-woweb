@@ -1,6 +1,13 @@
 <template>
   <v-container>
-    <ZugInput @search="search"/>
+    <ZugInput v-if="!stations" @search="search"/>
+    <v-col v-if="stations && !loading" align="center">
+      <v-row>
+        <v-col sm="4" xs="4" md="4" cols="12" align="left">
+          <v-btn max-width="120" @click="stations = null" width="100%" outlined color="zugMain" dark large>Zurück</v-btn>
+        </v-col>
+      </v-row>
+    </v-col>
 
     <v-row v-if="!notFound && !stations && !loading">
       <v-col align="center">
@@ -10,7 +17,7 @@
 
     <NotFound v-if="notFound" :message="message"/>
 
-    <ZugStations v-if="!loading && stations" :stations="stations" :departure="departure" :arrival="arrival"/>
+    <ZugStations v-if="!notFound && !loading && stations" :stations="stations" :departure="departure" :arrival="arrival"/>
 
     <Score v-if="!notFound && !loading && stations" :stations="stations"/>
 
@@ -101,15 +108,6 @@ export default {
       axios.get(`https://transport.opendata.ch/v1/connections?from=${from}&to=${to}&limit=1`)
           .then(response => {
             console.log(response)
-            this.departure.name = response.data.from.name;
-            this.departure.time = response.data.connections[0].from.departure.slice(11,16);
-            this.departure.type = response.data.connections[0].products[0];
-
-            this.arrival.name = response.data.to.name;
-            this.arrival.time = response.data.connections[0].to.arrival.slice(11,16);
-            const lastEl = response.data.connections[0].products.length -1;
-            console.log(lastEl);
-            this.arrival.type = response.data.connections[0].products[lastEl];
 
             let sections = [];
             let stops = [];
@@ -121,6 +119,7 @@ export default {
               this.stations = []
               this.message = 'Please enter a valid start and stop position'
               this.loading = false
+              this.stations = null
             }
             // Check if response is empty
             else if (response.data.connections.length === 0) {
@@ -128,8 +127,18 @@ export default {
               this.stations = []
               this.message = 'We could not find a route for your start and end position'
               this.loading = false
+              this.stations = null
             } else {
               //get coordinates of stops from respond
+              this.departure.name = response.data.from.name;
+              this.departure.time = response.data.connections[0].from.departure.slice(11,16);
+              this.departure.type = response.data.connections[0].products[0];
+
+              this.arrival.name = response.data.to.name;
+              this.arrival.time = response.data.connections[0].to.arrival.slice(11,16);
+              const lastEl = response.data.connections[0].products.length -1;
+              this.arrival.type = response.data.connections[0].products[lastEl];
+
               sections = response.data.connections[0].sections;
               let coordinates = sections.map(x => {
                 if (x.journey && x.journey.passList) {

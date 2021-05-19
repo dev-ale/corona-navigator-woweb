@@ -1,5 +1,5 @@
 <template>
-  <v-btn color="primary" x-large outlined absolute bottom right>
+  <v-btn dark color="red" x-large absolute bottom right>
     <h3>Score: {{ score }}</h3>
   </v-btn>
 </template>

@@ -53,7 +53,7 @@
                 <h2>{{ station.name }}</h2>
               </v-list-item-title>
               <v-list-item-subtitle>
-                <v-chip label v-if="!isNaN(station.incident)"color="primary" dark>{{ Math.round(station.incident) }}</v-chip>
+                <v-chip label v-if="!isNaN(station.incident)"color="red" dark>{{ Math.round(station.incident) }}</v-chip>
                 <v-chip label small v-if="isNaN(station.incident)" color="red" dark>{{ station.incident }}</v-chip>
               </v-list-item-subtitle>
             </v-list-item>
