@@ -12,4 +12,5 @@ urllib3
 configparser
 pytest
 pytest-html
+pytest-mock
 jsonschema
