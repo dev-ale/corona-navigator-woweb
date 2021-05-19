@@ -140,19 +140,19 @@ export default {
     * sample Data is used.
     */
     getIncidences() {
-      this.loading = false;
+      this.loading = true;
       axios.get(`/api/incidences`)
           .then(response => {
             if (response.data.length > 0) {
               console.log("Used real Data from DB")
               this.incidences = response.data
-              this.loading = true;
+              this.loading = false;
             }else {
               console.log("Could not load from DB")
             }
           })
           .catch(e => {
-
+            this.loading = false;
             console.log(e)
           })
     }
