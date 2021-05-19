@@ -2,6 +2,7 @@ import pytest
 import app
 from flask_pymongo import PyMongo
 
+
 @pytest.fixture
 def client():
     app.app.config['TESTING'] = True

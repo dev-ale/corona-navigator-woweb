@@ -11,6 +11,7 @@ logging.config.fileConfig('logging.ini')
 logger = logging.getLogger('LOGGER')
 errorLogger = logging.getLogger('ERROR-LOGGER')
 
+
 def get_incidences_from_canton_services():
     try:
         dict = {}
@@ -68,7 +69,7 @@ def get_incidences_from_canton_services():
         # get data from BS/BL
         url_blbs = parser.get("config", "blbs_incidences")
         url_blbs += "/?dateFrom=" + str(date_from) + "&dateTo=" + str(date_to)
-        certificate = "./certificates/certificate_blbs.pem"
+        certificate = parser.get("certificates", "blbs_certificate")
         data = call_to_service_with_pool_manager(certificate, url_blbs)
         dict['BLBS'] = data
         logger.info("Got data from BLBS: " + str(len(dict['BLBS'])) + " \tentries for incidences")
@@ -76,7 +77,7 @@ def get_incidences_from_canton_services():
         # get data from LU
         url_lu = parser.get("config", "lu_incidences")
         url_lu += "/?dateFrom=" + str(yesterday) + "&dateTo=" + str(date_to)
-        certificate = "./certificates/certificate_lu.pem"
+        certificate = parser.get("certificates", "lu_certificate")
         data = call_to_service_with_pool_manager(certificate, url_lu)
         dict['LU'] = data
         logger.info("Got data from LU: " + str(len(dict['LU'])) + " \t\tentries for incidences")
@@ -84,7 +85,7 @@ def get_incidences_from_canton_services():
         # get data from SZ
         url_sz = parser.get("config", "sz_incidences")
         url_sz += "/?dateFrom=" + str(date_from) + "&dateTo=" + str(date_to)
-        certificate = "./certificates/certificate_sz.pem"
+        certificate = parser.get("certificates", "sz_certificate")
         data = call_to_service_with_pool_manager(certificate, url_sz)
         dict['SZ'] = data
         logger.info("Got data from SZ: " + str(len(dict['SZ'])) + " \t\tentries for incidences")
@@ -92,7 +93,7 @@ def get_incidences_from_canton_services():
         # get data from SG
         url_sg = parser.get("config", "sg_incidences")
         url_sg += "/?dateFrom=" + str(yesterday) + "&dateTo=" + str(date_to)
-        certificate = "./certificates/certificate_sg.pem"
+        certificate = parser.get("certificates", "sg_certificate")
         data = call_to_service_with_pool_manager(certificate, url_sg)
         dict['SG'] = data
         logger.info("Got data from SG: " + str(len(dict['SG'])) + " \t\tentries for incidences")
@@ -100,7 +101,7 @@ def get_incidences_from_canton_services():
         # get data from FR (this seems not to work due to errors in the certificate)
         url_fr = parser.get("config", "fr_incidences")
         url_fr += "/?dateFrom=" + str(date_from) + "&dateTo=" + str(date_to)
-        certificate = "./certificates/certificate_fr.cer"
+        certificate = parser.get("certificates", "fr_certificate")
         data = call_to_service_with_pool_manager_fr(certificate, url_fr)
         dict['FR'] = data
         logger.info("Got data from FR: " + str(len(dict['FR'])) + " \tentries for incidences")
@@ -154,35 +155,35 @@ def get_municipalities_from_canton_services():
 
     # get data from BS/BL
     url_blbs = parser.get("config", "blbs_municipalities")
-    certificate = "./certificates/certificate_blbs.pem"
+    certificate = parser.get("certificates", "blbs_certificate")
     data = call_to_service_with_pool_manager(certificate, url_blbs)
     dict['BLBS'] = data
     logger.info("Got data from BLBS: " + str(len(dict['BLBS'])) + " \tentries for municipalities")
 
     # get data from LU
     url_lu = parser.get("config", "lu_municipalities")
-    certificate = "./certificates/certificate_lu.pem"
+    certificate = parser.get("certificates", "lu_certificate")
     data = call_to_service_with_pool_manager(certificate, url_lu)
     dict['LU'] = data
     logger.info("Got data from LU: " + str(len(dict['LU'])) + " \t\tentries for municipalities")
 
     # get data from SZ
     url_sz = parser.get("config", "sz_municipalities")
-    certificate = "./certificates/certificate_sz.pem"
+    certificate = parser.get("certificates", "sz_certificate")
     data = call_to_service_with_pool_manager(certificate, url_sz)
     dict['SZ'] = data
     logger.info("Got data from SZ: " + str(len(dict['SZ'])) + " \t\tentries for municipalities")
 
     # get data from SG
     url_sg = parser.get("config", "sg_municipalities")
-    certificate = "./certificates/certificate_sg.pem"
+    certificate = parser.get("certificates", "sg_certificate")
     data = call_to_service_with_pool_manager(certificate, url_sg)
     dict['SG'] = data
     logger.info("Got data from SG: " + str(len(dict['SG'])) + " \t\tentries for municipalities")
 
     # get data from FR (this seems not to work due to errors in the certificate)
     url_fr = parser.get("config", "fr_municipalities")
-    certificate = "./certificates/certificate_fr.pem"
+    certificate = parser.get("certificates", "fr_certificate")
     data = call_to_service_with_pool_manager_fr(certificate, url_fr)
     dict['FR'] = data
     logger.info("Got data from FR: " + str(len(dict['FR'])) + " \tentries for municipalities")
@@ -217,6 +218,7 @@ def call_to_service_with_pool_manager_fr(certificate, url):
         errorLogger.error(str(ex))
         return []
 
+
 def call_to_service_without_certificate(url):
     try:
         json_url = urlopen(url)
@@ -228,6 +230,5 @@ def call_to_service_without_certificate(url):
 
 
 if __name__ == '__main__':
-    dict = {}
-    dict['incidences'] = get_incidences_from_canton_services()
-    dict['municipalities'] = get_municipalities_from_canton_services()
+    dictionary = {'incidences': get_incidences_from_canton_services(),
+                  'municipalities': get_municipalities_from_canton_services()}
