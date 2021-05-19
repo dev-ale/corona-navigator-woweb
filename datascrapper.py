@@ -11,6 +11,7 @@ logging.config.fileConfig('logging.ini')
 logger = logging.getLogger('LOGGER')
 errorLogger = logging.getLogger('ERROR-LOGGER')
 
+
 def get_incidences_from_canton_services():
     try:
         dict = {}
@@ -217,6 +218,7 @@ def call_to_service_with_pool_manager_fr(certificate, url):
         errorLogger.error(str(ex))
         return []
 
+
 def call_to_service_without_certificate(url):
     try:
         json_url = urlopen(url)
@@ -228,6 +230,5 @@ def call_to_service_without_certificate(url):
 
 
 if __name__ == '__main__':
-    dict = {}
-    dict['incidences'] = get_incidences_from_canton_services()
-    dict['municipalities'] = get_municipalities_from_canton_services()
+    dictionary = {'incidences': get_incidences_from_canton_services(),
+                  'municipalities': get_municipalities_from_canton_services()}
