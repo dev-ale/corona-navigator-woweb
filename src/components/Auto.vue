@@ -4,20 +4,25 @@
       <v-col align="center">
         <v-row>
           <v-col sm="4" xs="4" md="4" cols="12">
-            <v-text-field solo clearable v-model="start" placeholder="von"></v-text-field>
+            <v-text-field @keyup.enter="search" solo clearable v-model="start" placeholder="von"></v-text-field>
           </v-col>
 
           <v-col sm="4" xs="4" md="4" cols="12">
-            <v-text-field solo clearable v-model="stoppoint" placeholder="pause"></v-text-field>
+            <v-text-field @keyup.enter="search" solo clearable v-model="stoppoint" placeholder="pause"></v-text-field>
           </v-col>
 
           <v-col sm="4" xs="4" md="4" cols="12">
-            <v-text-field solo clearable v-model="end" placeholder="bis"></v-text-field>
+            <v-text-field @keyup.enter="search" solo clearable v-model="end" placeholder="bis"></v-text-field>
           </v-col>
         </v-row>
-
+        <v-row>
+          <v-col>
+            <v-btn @click="search" width="100%" outlined color="primary" dark x-large>Suchen</v-btn>
+          </v-col>
+        </v-row>
       </v-col>
-      <v-row v-if="!start && !end">
+
+      <v-row v-if="!startCity.incident && !endCity.incident">
         <v-col align="center">
           <h2>Bitte geben Sie einen Start und Endort ein.</h2>
         </v-col>
@@ -29,7 +34,6 @@
         </v-col>
       </v-row>
       <GmapMap
-          v-if="start && end"
           style="width: 100%; height: 500px"
           :zoom="8"
           :center="{ lat: 46.8131873 , lng: 8.22421 }"
@@ -39,16 +43,17 @@
             :origin="origin"
             :destination="destionation"
             :location="location"
+            :count="count"
             @getDirections="getDirections"
 
         />
       </GmapMap>
-      <v-row v-if="start && end">
+      <v-row v-if="startCity.incident && endCity.incident">
         <v-col xs="12" sm="12" md="4">
           <v-list dense>
             <v-list-item>
               <v-list-item-title>
-                <h2>{{ start }}</h2>
+                <h2>{{ startCity.name }}</h2>
               </v-list-item-title>
               <v-list-item-subtitle>
                 <v-chip v-if="this.startCity.incident != null" color="primary" dark>{{ this.startCity.incident }}</v-chip>
@@ -58,7 +63,7 @@
 
             <v-list-item v-if="stoppoint">
               <v-list-item-title>
-                <h2>{{ stoppoint }}</h2>
+                <h2>{{ stoptCity.name }}</h2>
               </v-list-item-title>
               <v-list-item-subtitle>
                 <v-chip v-if="this.stoptCity.incident != null" color="primary" dark>{{ this.stoptCity.incident}}</v-chip>
@@ -68,7 +73,7 @@
 
             <v-list-item>
               <v-list-item-title>
-                <h2>{{ end }}</h2>
+                <h2>{{ endCity.name }}</h2>
               </v-list-item-title>
               <v-list-item-subtitle>
                 <v-chip v-if="this.endCity.incident != null" color="primary" dark>{{ this.endCity.incident}}</v-chip>
@@ -117,6 +122,7 @@ export default {
       incident :null
     },
     apikey: process.env.VUE_APP_GOOGLEMAPS_API_KEY,
+    count: -1,
 
   }),
 
@@ -137,6 +143,9 @@ export default {
   },
   methods: {
 
+    search(){
+      this.count *= -1;
+    },
     /*
     * Calculate  Incident for specific city and return the incident value
     */

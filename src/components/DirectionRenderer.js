@@ -22,13 +22,14 @@ export default MapElementFactory({
         destination: { type: Object },
         location: {type: String},
         travelMode: { type: String },
-        search: {type: Function}
+        search: {type: Function},
+        count: {type: Number}
     },
 
     afterCreate(directionsRenderer) {
         let directionsService = new window.google.maps.DirectionsService();
         this.$watch(
-            () => [this.origin, this.destination, this.travelMode, this.location],
+            () => [this.count],
             () => {
                 let { origin, destination, travelMode, location } = this;
                 if (!origin || !destination || !travelMode) return;
