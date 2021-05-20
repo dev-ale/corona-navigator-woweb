@@ -40,10 +40,10 @@
       >
         <DirectionsRenderer
             travelMode="DRIVING"
-            :origin="origin"
-            :destination="destionation"
-            :location="location"
-            :count="count"
+            :origin="start"
+            :destination="end"
+            :location="stoppoint"
+            :count="triggerSearch"
             @getDirections="getDirections"
 
         />
@@ -56,8 +56,8 @@
                 <h2>{{ startCity.name }}</h2>
               </v-list-item-title>
               <v-list-item-subtitle>
-                <v-chip v-if="this.startCity.incident != null" color="primary" dark>{{ this.startCity.incident }}</v-chip>
-                <v-chip v-if="this.startCity.incident === null" outlined color="primary">Loading!</v-chip>
+                <v-chip v-if="startCity.incident != null" color="primary" dark>{{ startCity.incident }}</v-chip>
+                <v-chip v-if="startCity.incident === null" outlined color="primary">Loading!</v-chip>
               </v-list-item-subtitle>
             </v-list-item>
 
@@ -66,8 +66,8 @@
                 <h2>{{ stoptCity.name }}</h2>
               </v-list-item-title>
               <v-list-item-subtitle>
-                <v-chip v-if="this.stoptCity.incident != null" color="primary" dark>{{ this.stoptCity.incident}}</v-chip>
-                <v-chip v-if="this.stoptCity.incident === null" outlined color="primary">Loading!</v-chip>
+                <v-chip v-if="stoptCity.incident != null" color="primary" dark>{{ stoptCity.incident}}</v-chip>
+                <v-chip v-if="stoptCity.incident === null" outlined color="primary">Loading!</v-chip>
               </v-list-item-subtitle>
             </v-list-item>
 
@@ -76,8 +76,8 @@
                 <h2>{{ endCity.name }}</h2>
               </v-list-item-title>
               <v-list-item-subtitle>
-                <v-chip v-if="this.endCity.incident != null" color="primary" dark>{{ this.endCity.incident}}</v-chip>
-                <v-chip v-if="this.endCity.incident === null" outlined color="primary">Loading!</v-chip>
+                <v-chip v-if="endCity.incident != null" color="primary" dark>{{ endCity.incident}}</v-chip>
+                <v-chip v-if="endCity.incident === null" outlined color="primary">Loading!</v-chip>
               </v-list-item-subtitle>
             </v-list-item>
           </v-list>
@@ -103,10 +103,6 @@ export default {
     start: "",
     end: "",
     stoppoint: "",
-    directions: null,
-    startLocation: {lat: null, lng: null},
-    stopLocation: {lat: null, lng: null},
-    endLocation: {lat: null, lng: null},
     duration1Text: "",
     duration2Text: "",
     startCity: {
@@ -122,51 +118,35 @@ export default {
       incident :null
     },
     apikey: process.env.VUE_APP_GOOGLEMAPS_API_KEY,
-    count: -1,
+    triggerSearch: -1,
 
   }),
 
   computed: {
     google: gmapApi,
-    origin() {
-      if (!this.start) return null;
-      return {query: this.start};
-    },
-    destionation() {
-      if (!this.end) return null;
-      return {query: this.end};
-    },
-    location() {
-      if (!this.stoppoint) return null;
-      return this.stoppoint;
-    }
   },
   methods: {
-
+    /*
+       * changes value of triggerSearch, directions will bi rendered on change (buttonclick)
+    */
     search(){
-      this.count *= -1;
+      this.triggerSearch *= -1;
     },
     /*
-    * Calculate  Incident for specific city and return the incident value
+      * corrects some wrong values given by google api
     */
-    getIncident(cityName) {
-      const name = cityName.charAt(0).toUpperCase() + cityName.slice(1);
-      if (this.incidences.find(it => it.name === name)) {
-        const city = this.incidences.find(it => it.name === name);
-        return (city.incident)
-      } else {
-        return "Keine Daten verfügbar"
-      }
-    },
-
     correctCityName(city){
       if (city.long_name.includes("Sankt")) {
         return city.long_name.replace("Sankt", "St.")
       }else if(city.long_name.includes("Biel")){
         return city.long_name.concat("/Bienne")
-      }else {return city.long_name;}
+      }else if(city.long_name.includes("Kanton Reinach")){
+        return city.long_name.replace("Kanton ", "")
+      } else {return city.long_name;}
     },
-
+    /*
+       * Calculate  Incident for specific lng and lat from city and return the incident value
+    */
     async getIncidentsByCoordinates(lng, lat) {
       return await axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key=" +this.apikey)
           .then(response => {
@@ -200,56 +180,57 @@ export default {
     /*
     * Get direction and display distance and duration in UI
     */
-    getDirections (resp) {
+    getDirections (directions) {
       this.stoptCity = {
         name: "",
         incident :null
       }
+      let startLocation = {lat: null, lng: null};
+      let stopLocation = {lat: null, lng: null};
+      let endLocation= {lat: null, lng: null};
 
-      this.directions = resp
-      let obj1 = this.directions.routes[0].legs[0];
-      let obj2 = this.directions.routes[0].legs[1];
 
-      console.log(this.directions);
-      this.startLocation.lat = obj1.start_location.lat();
-      this.startLocation.lng = obj1.start_location.lng();
+
+      let obj1 = directions.routes[0].legs[0];
+      let obj2 = directions.routes[0].legs[1];
+
+      startLocation.lat = obj1.start_location.lat();
+      startLocation.lng = obj1.start_location.lng();
 
       if(obj2){
-        this.endLocation.lat = obj2.end_location.lat();
-        this.endLocation.lng = obj2.end_location.lng();
+        endLocation.lat = obj2.end_location.lat();
+        endLocation.lng = obj2.end_location.lng();
 
-        this.stopLocation.lat = obj2.start_location.lat();
-        this.stopLocation.lng = obj2.start_location.lng();
+        stopLocation.lat = obj2.start_location.lat();
+        stopLocation.lng = obj2.start_location.lng();
 
-        this.getIncidentsByCoordinates(this.stopLocation.lng, this.stopLocation.lat).then(m => {
+        this.getIncidentsByCoordinates(stopLocation.lng, stopLocation.lat).then(m => {
           this.stoptCity = m;
         })
 
       }else{
-        this.endLocation.lat = this.directions.routes[0].legs[0].end_location.lat()
-        this.endLocation.lng = this.directions.routes[0].legs[0].end_location.lng()
+        endLocation.lat = directions.routes[0].legs[0].end_location.lat()
+        endLocation.lng = directions.routes[0].legs[0].end_location.lng()
       }
-      this.getIncidentsByCoordinates(this.startLocation.lng, this.startLocation.lat).then(m => {
+
+      this.getIncidentsByCoordinates(startLocation.lng, startLocation.lat).then(m => {
         this.startCity = m;
       })
-      this.getIncidentsByCoordinates(this.endLocation.lng, this.endLocation.lat).then(m => {
+      this.getIncidentsByCoordinates(endLocation.lng, endLocation.lat).then(m => {
         this.endCity = m;
-        console.log(this.endCity);
       })
 
 
-      this.duration = this.directions.routes[0].legs[0].duration.text
-      this.distance = this.directions.routes[0].legs[0].distance.text
-      this.getDistance()
+      this.duration = directions.routes[0].legs[0].duration.text
+      this.distance = directions.routes[0].legs[0].distance.text
+      this.getDistance(obj1, obj2)
 
     },
 
     /*
     * Helper Function in "getDirection" to calculate and format Duration Time
     */
-    getDistance () {
-      let obj1 = this.directions.routes[0].legs[0]
-      let obj2 = this.directions.routes[0].legs[1]
+    getDistance (obj1, obj2) {
 
       let start = obj1.start_address
       let stop = obj1.end_address
