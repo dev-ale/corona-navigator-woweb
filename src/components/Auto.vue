@@ -51,8 +51,8 @@
                 <h2>{{ start }}</h2>
               </v-list-item-title>
               <v-list-item-subtitle>
-                <v-chip v-if="!isNaN(getIncident(start))" color="primary" dark>{{ Math.round(getIncident(start)) }}</v-chip>
-                <v-chip v-if="isNaN(getIncident(start))" outlined color="primary">{{ getIncident(start) }}</v-chip>
+                <v-chip v-if="this.endCity.incident != null" color="primary" dark>{{ this.endCity.incident }}</v-chip>
+                <v-chip v-if="this.endCity.incident === null" outlined color="primary">Loading!</v-chip>
               </v-list-item-subtitle>
             </v-list-item>
 
@@ -61,8 +61,8 @@
                 <h2>{{ stoppoint }}</h2>
               </v-list-item-title>
               <v-list-item-subtitle>
-                <v-chip v-if="!isNaN(getIncident(stoppoint))" color="primary" dark>{{ Math.round(getIncident(stoppoint)) }}</v-chip>
-                <v-chip v-if="isNaN(getIncident(stoppoint))" outlined color="primary">{{ getIncident(stoppoint) }}</v-chip>
+                <v-chip v-if="this.stoptCity.incident != null" color="primary" dark>{{ this.stoptCity.incident}}</v-chip>
+                <v-chip v-if="this.stoptCity.incident === null" outlined color="primary">Loading!</v-chip>
               </v-list-item-subtitle>
             </v-list-item>
 
@@ -71,8 +71,8 @@
                 <h2>{{ end }}</h2>
               </v-list-item-title>
               <v-list-item-subtitle>
-                <v-chip v-if="!isNaN(getIncident(end))" color="primary" dark>{{ Math.round(getIncident(end)) }}</v-chip>
-                <v-chip v-if="isNaN(getIncident(end))" outlined color="primary">{{ getIncident(end) }}</v-chip>
+                <v-chip v-if="this.startCity.incident != null" color="primary" dark>{{ this.startCity.incident}}</v-chip>
+                <v-chip v-if="this.startCity.incident === null" outlined color="primary">Loading!</v-chip>
               </v-list-item-subtitle>
             </v-list-item>
           </v-list>
@@ -100,9 +100,23 @@ export default {
     stoppoint: "",
     directions: null,
     startLocation: {lat: null, lng: null},
+    stopLocation: {lat: null, lng: null},
     endLocation: {lat: null, lng: null},
     duration1Text: "",
     duration2Text: "",
+    startCity: {
+      name: "",
+      incident :null
+    },
+    endCity: {
+      name: "",
+      incident :null
+    },
+    stoptCity: {
+      name: "",
+      incident :null
+    },
+    apikey: process.env.VUE_APP_GOOGLEMAPS_API_KEY,
 
   }),
 
@@ -136,21 +150,91 @@ export default {
       }
     },
 
+    correctCityName(city){
+      if (city.long_name.includes("Sankt")) {
+        return city.long_name.replace("Sankt", "St.")
+      }else if(city.long_name.includes("Biel")){
+        return city.long_name.concat("/Bienne")
+      }else {return city.long_name;}
+    },
+
+    async getIncidentsByCoordinates(lng, lat) {
+      return await axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key=" +this.apikey)
+          .then(response => {
+            //placeholder for cityname and canton
+            let m = {};
+            let cityname;
+            let canton;
+            //Set placeholder cityname and canton
+            response.data.results[0].address_components.forEach(x => {
+                  if (x.types.includes("locality")) {
+                    //correcting naming from Google api
+                    cityname = this.correctCityName(x);
+                  } else if (x.types.includes("administrative_area_level_1")) {
+                    canton = x.short_name;
+                  }
+                }
+            )
+            //search for City in our database and fils array with cityname and the corrisponding incident
+            const city = this.incidences.find(v => v.name === cityname && v.canton === canton);
+            if (city != undefined) {
+              m = {name: city.name, incident: city.incident}
+            } else {
+              m = {name: cityname, incident: "Keine Daten verfügbar"}
+              //logs all city which weren't found in our database
+              console.log(cityname, canton)
+            }
+            return m;
+          }).catch(e => console.log(e));
+    },
+
     /*
     * Get direction and display distance and duration in UI
     */
     getDirections (resp) {
+      this.startCity, this.stoptCity, this.endCity = {
+        name: "",
+        incident :null
+      }
+
       this.directions = resp
+      let obj1 = this.directions.routes[0].legs[0];
+      let obj2 = this.directions.routes[0].legs[1];
 
-      this.startLocation.lat = this.directions.routes[0].legs[0].start_location.lat()
-      this.startLocation.lng = this.directions.routes[0].legs[0].start_location.lng()
+      console.log(this.directions);
+      this.startLocation.lat = obj1.start_location.lat();
+      this.startLocation.lng = obj1.start_location.lng();
 
-      this.endLocation.lat = this.directions.routes[0].legs[0].end_location.lat()
-      this.endLocation.lng = this.directions.routes[0].legs[0].end_location.lng()
+      if(obj2){
+        this.endLocation.lat = obj2.end_location.lat();
+        this.endLocation.lng = obj2.end_location.lng();
+
+        this.stopLocation.lat = obj2.start_location.lat();
+        this.stopLocation.lng = obj2.start_location.lng();
+
+        this.getIncidentsByCoordinates(this.stopLocation.lng, this.stopLocation.lat).then(m => {
+          this.stoptCity = m;
+        })
+
+      }else{
+        this.endLocation.lat = this.directions.routes[0].legs[0].end_location.lat()
+        this.endLocation.lng = this.directions.routes[0].legs[0].end_location.lng()
+      }
+      this.getIncidentsByCoordinates(this.startLocation.lng, this.startLocation.lat).then(m => {
+        this.startCity = m;
+      })
+      this.getIncidentsByCoordinates(this.endLocation.lng, this.endLocation.lat).then(m => {
+        this.endCity = m;
+        console.log(this.endCity);
+      })
+
 
       this.duration = this.directions.routes[0].legs[0].duration.text
       this.distance = this.directions.routes[0].legs[0].distance.text
       this.getDistance()
+
+
+
     },
 
     /*
