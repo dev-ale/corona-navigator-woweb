@@ -72,7 +72,7 @@
               </v-list-item-title>
               <v-list-item-subtitle>
                 <v-chip v-if="this.endCity.incident != null" color="primary" dark>{{ this.endCity.incident}}</v-chip>
-                <v-chip v-if="this.startCity.incident === null" outlined color="primary">Loading!</v-chip>
+                <v-chip v-if="this.endCity.incident === null" outlined color="primary">Loading!</v-chip>
               </v-list-item-subtitle>
             </v-list-item>
           </v-list>
