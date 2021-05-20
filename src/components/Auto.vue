@@ -201,7 +201,7 @@ export default {
     * Get direction and display distance and duration in UI
     */
     getDirections (resp) {
-      this.startCity, this.stoptCity, this.endCity = {
+      this.stoptCity = {
         name: "",
         incident :null
       }
@@ -241,8 +241,6 @@ export default {
       this.duration = this.directions.routes[0].legs[0].duration.text
       this.distance = this.directions.routes[0].legs[0].distance.text
       this.getDistance()
-
-
 
     },
 
