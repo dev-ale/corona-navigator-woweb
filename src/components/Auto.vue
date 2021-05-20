@@ -61,7 +61,7 @@
               </v-list-item-subtitle>
             </v-list-item>
 
-            <v-list-item v-if="stoppoint">
+            <v-list-item v-if="stoptCity.incident">
               <v-list-item-title>
                 <h2>{{ stoptCity.name }}</h2>
               </v-list-item-title>
