@@ -48,7 +48,7 @@
 
         />
       </GmapMap>
-      <v-row v-if="startCity.incident && endCity.incident">
+      <v-row v-if="startCity.incident !=null && endCity.incident != null">
         <v-col xs="12" sm="12" md="4">
           <v-list dense>
             <v-list-item>
