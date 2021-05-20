@@ -56,7 +56,7 @@
                 <h2>{{ startCity.name }}</h2>
               </v-list-item-title>
               <v-list-item-subtitle>
-                <v-chip v-if="startCity.incident != null" color="primary" dark>{{ startCity.incident }}</v-chip>
+                <v-chip v-if="startCity.incident != null" color="primary" dark>{{ Math.round(startCity.incident) }}</v-chip>
                 <v-chip v-if="startCity.incident === null" outlined color="primary">Loading!</v-chip>
               </v-list-item-subtitle>
             </v-list-item>
@@ -66,7 +66,7 @@
                 <h2>{{ stoptCity.name }}</h2>
               </v-list-item-title>
               <v-list-item-subtitle>
-                <v-chip v-if="stoptCity.incident != null" color="primary" dark>{{ stoptCity.incident}}</v-chip>
+                <v-chip v-if="stoptCity.incident != null" color="primary" dark>{{ Math.round(stoptCity.incident)}}</v-chip>
                 <v-chip v-if="stoptCity.incident === null" outlined color="primary">Loading!</v-chip>
               </v-list-item-subtitle>
             </v-list-item>
@@ -76,7 +76,7 @@
                 <h2>{{ endCity.name }}</h2>
               </v-list-item-title>
               <v-list-item-subtitle>
-                <v-chip v-if="endCity.incident != null" color="primary" dark>{{ endCity.incident}}</v-chip>
+                <v-chip v-if="endCity.incident != null" color="primary" dark>{{ Math.round(endCity.incident)}}</v-chip>
                 <v-chip v-if="endCity.incident === null" outlined color="primary">Loading!</v-chip>
               </v-list-item-subtitle>
             </v-list-item>
