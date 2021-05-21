@@ -1,4 +1,5 @@
 <template>
+  <v-card min-height="80vh">
   <v-container>
     <div>
       <v-col align="center">
@@ -96,6 +97,7 @@
 
     </div>
   </v-container>
+  </v-card>
 </template>
 
 <script>
