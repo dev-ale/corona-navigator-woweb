@@ -48,41 +48,41 @@
 
         />
       </GmapMap>
-      <v-row v-if="startCity.incident !=null && endCity.incident != null">
-        <v-col xs="12" sm="12" md="4">
-          <v-list dense>
-            <v-list-item>
-              <v-list-item-title>
-                <h2>{{ startCity.name }}</h2>
-              </v-list-item-title>
-              <v-list-item-subtitle>
-                <v-chip v-if="startCity.incident != null" color="primary" dark>{{ Math.round(startCity.incident) }}</v-chip>
-                <v-chip v-if="startCity.incident === null" outlined color="primary">Loading!</v-chip>
-              </v-list-item-subtitle>
-            </v-list-item>
+          <v-row v-if="startCity.incident !=null && endCity.incident != null">
+            <v-col xs="12" sm="12" md="4">
+              <v-list dense>
+                <v-list-item>
+                  <v-list-item-title>
+                    <h2>{{ startCity.name }}</h2>
+                  </v-list-item-title>
+                  <v-list-item-subtitle>
+                    <v-chip v-if="startCity.incident != null" color="primary" dark>{{ checkAndRound(startCity.incident) }}</v-chip>
+                    <v-chip v-if="startCity.incident === null" outlined color="primary">Loading!</v-chip>
+                  </v-list-item-subtitle>
+                </v-list-item>
 
-            <v-list-item v-if="stoptCity.incident">
-              <v-list-item-title>
-                <h2>{{ stoptCity.name }}</h2>
-              </v-list-item-title>
-              <v-list-item-subtitle>
-                <v-chip v-if="stoptCity.incident != null" color="primary" dark>{{ Math.round(stoptCity.incident)}}</v-chip>
-                <v-chip v-if="stoptCity.incident === null" outlined color="primary">Loading!</v-chip>
-              </v-list-item-subtitle>
-            </v-list-item>
+                <v-list-item v-if="stoptCity.incident">
+                  <v-list-item-title>
+                    <h2>{{ stoptCity.name }}</h2>
+                  </v-list-item-title>
+                  <v-list-item-subtitle>
+                    <v-chip v-if="stoptCity.incident != null" color="primary" dark>{{ checkAndRound(stoptCity.incident)}}</v-chip>
+                    <v-chip v-if="stoptCity.incident === null" outlined color="primary">Loading!</v-chip>
+                  </v-list-item-subtitle>
+                </v-list-item>
 
-            <v-list-item>
-              <v-list-item-title>
-                <h2>{{ endCity.name }}</h2>
-              </v-list-item-title>
-              <v-list-item-subtitle>
-                <v-chip v-if="endCity.incident != null" color="primary" dark>{{ Math.round(endCity.incident)}}</v-chip>
-                <v-chip v-if="endCity.incident === null" outlined color="primary">Loading!</v-chip>
-              </v-list-item-subtitle>
-            </v-list-item>
-          </v-list>
-        </v-col>
-      </v-row>
+                <v-list-item>
+                  <v-list-item-title>
+                    <h2>{{ endCity.name }}</h2>
+                  </v-list-item-title>
+                  <v-list-item-subtitle>
+                    <v-chip v-if="endCity.incident != null" color="primary" dark>{{ checkAndRound(endCity.incident)}}</v-chip>
+                    <v-chip v-if="endCity.incident === null" outlined color="primary">Loading!</v-chip>
+                  </v-list-item-subtitle>
+                </v-list-item>
+              </v-list>
+            </v-col>
+          </v-row>
     </div>
   </v-container>
 </template>
@@ -126,6 +126,16 @@ export default {
     google: gmapApi,
   },
   methods: {
+    /*
+       * changes value of triggerSearch, directions will bi rendered on change (buttonclick)
+    */
+    checkAndRound(incident){
+      if(incident){
+        return incident
+      }else{
+        return Math.round(incident);
+      }
+    },
     /*
        * changes value of triggerSearch, directions will bi rendered on change (buttonclick)
     */
