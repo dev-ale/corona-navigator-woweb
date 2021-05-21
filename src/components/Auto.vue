@@ -22,11 +22,19 @@
         </v-row>
       </v-col>
 
-      <v-row v-if="!startCity.incident && !endCity.incident">
+      <v-row v-if="!startCity.incident && !endCity.incident && !searchFail">
         <v-col align="center">
           <h2>Bitte geben Sie einen Start und Endort ein.</h2>
         </v-col>
       </v-row>
+
+      <v-row v-if="searchFail">
+        <v-col align="center">
+          <h2>Keine Route gefunden - Versuchen Sie es nocheinmal</h2>
+        </v-col>
+      </v-row>
+
+
       <v-row>
         <v-col align="center">
           <h4 v-if="duration1Text !== ''">{{ duration1Text }}</h4>
@@ -45,6 +53,7 @@
             :location="stoppoint"
             :count="triggerSearch"
             @getDirections="getDirections"
+            @failure="searchFailTrigger"
 
         />
       </GmapMap>
@@ -97,7 +106,7 @@ import Score from "@/components/Score";
 export default {
   components: {
     DirectionsRenderer,
-    Score
+    Score,
   },
   props: {
     incidences: Array,
@@ -124,6 +133,7 @@ export default {
     apikey: process.env.VUE_APP_GOOGLEMAPS_API_KEY,
     triggerSearch: -1,
     stations: [],
+    searchFail: false,
 
   }),
 
@@ -131,6 +141,10 @@ export default {
     google: gmapApi,
   },
   methods: {
+
+    searchFailTrigger(){
+      this.searchFail = true;
+    },
 
     /*
        * changes value of triggerSearch, directions will bi rendered on change (buttonclick)
@@ -187,6 +201,7 @@ export default {
     * Get direction and display distance and duration in UI
     */
     getDirections (directions) {
+      this.searchFail = false;
       this.stoptCity = {
         name: "",
         incident :null
@@ -234,7 +249,6 @@ export default {
       this.duration = directions.routes[0].legs[0].duration.text
       this.distance = directions.routes[0].legs[0].distance.text
       this.getDistance(obj1, obj2)
-
     },
 
     /*

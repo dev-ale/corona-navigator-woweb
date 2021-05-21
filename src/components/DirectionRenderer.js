@@ -15,6 +15,9 @@ export default MapElementFactory({
         getDirections (res) {
             this.$emit('getDirections', res)
         },
+        failure () {
+            this.$emit('failure')
+        },
     },
 
     props: {
@@ -58,10 +61,12 @@ export default MapElementFactory({
                 directionsService.route(
                     request,
                     (response, status) => {
-                        if (status !== "OK") return;
-                        directionsRenderer.setDirections(response);
-                        this.getDirections(response)
-                        //console.log(response.routes[0].legs[0].duration)
+                        if (status !== "OK") {
+                            this.failure();
+                        }else {
+                            directionsRenderer.setDirections(response);
+                            this.getDirections(response)
+                        }
                     }
                 );
             }
