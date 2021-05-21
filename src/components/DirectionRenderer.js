@@ -18,8 +18,8 @@ export default MapElementFactory({
     },
 
     props: {
-        origin: { type: Object },
-        destination: { type: Object },
+        origin: { type: String },
+        destination: { type: String },
         location: {type: String},
         travelMode: { type: String },
         search: {type: Function},

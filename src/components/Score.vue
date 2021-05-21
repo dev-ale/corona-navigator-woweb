@@ -38,6 +38,10 @@ export default {
       if(isNaN(score)) {
         this.score = "Keine Daten";
         return;
+      }else if(score === 0)
+      {
+        this.score = 0;
+        return;
       }
       score = score / count
       this.score = Math.round(score * 100) / 100

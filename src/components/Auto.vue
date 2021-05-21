@@ -123,7 +123,7 @@ export default {
     },
     apikey: process.env.VUE_APP_GOOGLEMAPS_API_KEY,
     triggerSearch: -1,
-    stations: null,
+    stations: [],
 
   }),
 
@@ -213,7 +213,7 @@ export default {
 
         this.getIncidentsByCoordinates(stopLocation.lng, stopLocation.lat).then(m => {
           this.stoptCity = m;
-          this.stations.push(m.incident);
+          this.stations.push({name: m.name ,incident: m.incident});
         })
 
       }else{
@@ -223,11 +223,11 @@ export default {
 
       this.getIncidentsByCoordinates(startLocation.lng, startLocation.lat).then(m => {
         this.startCity = m;
-        this.stations.push(m.incident);
+        this.stations.push({name: m.name ,incident: m.incident});
       })
       this.getIncidentsByCoordinates(endLocation.lng, endLocation.lat).then(m => {
         this.endCity = m;
-        this.stations.push(m.incident);
+        this.stations.push({name: m.name ,incident: m.incident});
       })
 
 
