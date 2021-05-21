@@ -56,7 +56,7 @@
                     <h2>{{ startCity.name }}</h2>
                   </v-list-item-title>
                   <v-list-item-subtitle>
-                    <v-chip v-if="startCity.incident != null" color="primary" dark>{{ checkAndRound(startCity.incident) }}</v-chip>
+                    <v-chip v-if="startCity.incident != null" color="primary" dark>{{ startCity.incident }}</v-chip>
                     <v-chip v-if="startCity.incident === null" outlined color="primary">Loading!</v-chip>
                   </v-list-item-subtitle>
                 </v-list-item>
@@ -66,7 +66,7 @@
                     <h2>{{ stoptCity.name }}</h2>
                   </v-list-item-title>
                   <v-list-item-subtitle>
-                    <v-chip v-if="stoptCity.incident != null" color="primary" dark>{{ checkAndRound(stoptCity.incident)}}</v-chip>
+                    <v-chip v-if="stoptCity.incident != null" color="primary" dark>{{ stoptCity.incident}}</v-chip>
                     <v-chip v-if="stoptCity.incident === null" outlined color="primary">Loading!</v-chip>
                   </v-list-item-subtitle>
                 </v-list-item>
@@ -76,7 +76,7 @@
                     <h2>{{ endCity.name }}</h2>
                   </v-list-item-title>
                   <v-list-item-subtitle>
-                    <v-chip v-if="endCity.incident != null" color="primary" dark>{{ checkAndRound(endCity.incident)}}</v-chip>
+                    <v-chip v-if="endCity.incident != null" color="primary" dark>{{ endCity.incident }}</v-chip>
                     <v-chip v-if="endCity.incident === null" outlined color="primary">Loading!</v-chip>
                   </v-list-item-subtitle>
                 </v-list-item>
@@ -131,16 +131,7 @@ export default {
     google: gmapApi,
   },
   methods: {
-    /*
-       * changes value of triggerSearch, directions will bi rendered on change (buttonclick)
-    */
-    checkAndRound(incident){
-      if(incident){
-        return incident
-      }else{
-        return Math.round(incident);
-      }
-    },
+
     /*
        * changes value of triggerSearch, directions will bi rendered on change (buttonclick)
     */
@@ -182,7 +173,7 @@ export default {
             //search for City in our database and fils array with cityname and the corrisponding incident
             const city = this.incidences.find(v => v.name === cityname && v.canton === canton);
             if (city != undefined) {
-              m = {name: city.name, incident: city.incident}
+              m = {name: city.name, incident: Math.round(city.incident)}
             } else {
               m = {name: cityname, incident: "Keine Daten verfügbar"}
               //logs all city which weren't found in our database
