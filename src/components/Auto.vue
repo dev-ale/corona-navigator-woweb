@@ -82,18 +82,22 @@
                 </v-list-item>
               </v-list>
             </v-col>
+            <Score v-if="startCity.incident !=null && endCity.incident != null" :stations="stations"/>
           </v-row>
+
     </div>
   </v-container>
 </template>
 
 <script>
 import DirectionsRenderer from "@/components/DirectionRenderer";
-import {gmapApi} from 'vue2-google-maps'
+import {gmapApi} from 'vue2-google-maps';
+import Score from "@/components/Score";
 
 export default {
   components: {
-    DirectionsRenderer
+    DirectionsRenderer,
+    Score
   },
   props: {
     incidences: Array,
@@ -119,6 +123,7 @@ export default {
     },
     apikey: process.env.VUE_APP_GOOGLEMAPS_API_KEY,
     triggerSearch: -1,
+    stations: null,
 
   }),
 
@@ -195,6 +200,7 @@ export default {
         name: "",
         incident :null
       }
+      this.stations = [];
       let startLocation = {lat: null, lng: null};
       let stopLocation = {lat: null, lng: null};
       let endLocation= {lat: null, lng: null};
@@ -216,6 +222,7 @@ export default {
 
         this.getIncidentsByCoordinates(stopLocation.lng, stopLocation.lat).then(m => {
           this.stoptCity = m;
+          this.stations.push(m.incident);
         })
 
       }else{
@@ -225,9 +232,11 @@ export default {
 
       this.getIncidentsByCoordinates(startLocation.lng, startLocation.lat).then(m => {
         this.startCity = m;
+        this.stations.push(m.incident);
       })
       this.getIncidentsByCoordinates(endLocation.lng, endLocation.lat).then(m => {
         this.endCity = m;
+        this.stations.push(m.incident);
       })
 
 

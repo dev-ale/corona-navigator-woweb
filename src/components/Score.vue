@@ -35,6 +35,10 @@ export default {
           count ++
         }
       });
+      if(isNaN(score)) {
+        this.score = "Keine Daten";
+        return;
+      }
       score = score / count
       this.score = Math.round(score * 100) / 100
     }
