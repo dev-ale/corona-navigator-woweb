@@ -140,9 +140,10 @@ export default {
               this.arrival.type = response.data.connections[0].products[lastEl];
 
               sections = response.data.connections[0].sections;
+              console.log(sections);
               let coordinates = sections.map(x => {
                 if (x.journey && x.journey.passList) {
-                  return x.journey.passList.map(y => ({c: y.station.coordinate, name: y.station.name}))
+                  return x.journey.passList.map(y => ({c: y.station.coordinate, ar: y.arrival, dep: y.departure}))
                 } else {
                   return null;
                 }
@@ -154,7 +155,7 @@ export default {
                 }
               });
               console.log(this.filteredCoordinates);
-              this.filteredCoordinates = this.filteredCoordinates.filter(x => !x.name.includes("tunnel") && !x.name.includes("see"))
+              this.filteredCoordinates = this.filteredCoordinates.filter(x => x.ar || x.dep)
                                                                   .map(x => x.c);
 
 
