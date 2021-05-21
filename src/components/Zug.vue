@@ -142,18 +142,21 @@ export default {
               sections = response.data.connections[0].sections;
               let coordinates = sections.map(x => {
                 if (x.journey && x.journey.passList) {
-                  return x.journey.passList.map(y => y.station.coordinate)
+                  return x.journey.passList.map(y => ({c: y.station.coordinate, name: y.station.name}))
                 } else {
                   return null;
                 }
               });
-
               //filter coordinate and pushed in one dimensional array
               coordinates.forEach(l => {
                 if (l) {
                   l.forEach(e => this.filteredCoordinates.push((e)))
                 }
               });
+              console.log(this.filteredCoordinates);
+              this.filteredCoordinates = this.filteredCoordinates.filter(x => !x.name.includes("tunnel") && !x.name.includes("see"))
+                                                                  .map(x => x.c);
+
 
               //array for promises from google api get request
               let promises = [];
