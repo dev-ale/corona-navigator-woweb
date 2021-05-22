@@ -3,22 +3,24 @@
     <div>
       <v-col align="center">
         <v-row>
-          <v-col sm="4" xs="4" md="4" cols="12">
+          <v-col sm="3" xs="3" md="3" cols="12">
             <v-text-field @keyup.enter="search" solo clearable v-model="start" placeholder="von"></v-text-field>
           </v-col>
 
-          <v-col sm="4" xs="4" md="4" cols="12">
+          <v-col sm="3" xs="3" md="3" cols="12">
             <v-text-field @keyup.enter="search" solo clearable v-model="stoppoint" placeholder="pause"></v-text-field>
           </v-col>
 
-          <v-col sm="4" xs="4" md="4" cols="12">
+          <v-col sm="3" xs="3" md="3" cols="12">
             <v-text-field @keyup.enter="search" solo clearable v-model="end" placeholder="bis"></v-text-field>
+          </v-col>
+
+          <v-col sm="3" xs="3" md="3" cols="12">
+            <v-btn @click="search" width="100%" outlined color="primary" dark x-large>Suchen</v-btn>
           </v-col>
         </v-row>
         <v-row>
-          <v-col>
-            <v-btn @click="search" width="100%" outlined color="primary" dark x-large>Suchen</v-btn>
-          </v-col>
+
         </v-row>
       </v-col>
 
@@ -30,7 +32,7 @@
 
       <v-row v-if="searchFail">
         <v-col align="center">
-          <h2>Keine Route gefunden - Versuchen Sie es nocheinmal</h2>
+          <NotFound message="Keine Route gefunden - Versuchen Sie es noch einmal"/>
         </v-col>
       </v-row>
 
@@ -42,6 +44,7 @@
         </v-col>
       </v-row>
       <GmapMap
+          v-show="showMap"
           style="width: 100%; height: 500px"
           :zoom="8"
           :center="{ lat: 46.8131873 , lng: 8.22421 }"
@@ -57,7 +60,7 @@
 
         />
       </GmapMap>
-          <v-row v-if="startCity.incident !=null && endCity.incident != null">
+          <v-row v-if="startCity.incident !=null && endCity.incident != null && !searchFail">
             <v-col xs="12" sm="12" md="4">
               <v-list dense>
                 <v-list-item>
@@ -91,7 +94,7 @@
                 </v-list-item>
               </v-list>
             </v-col>
-            <Score v-if="startCity.incident !=null && endCity.incident != null" :stations="stations"/>
+            <Score v-if="startCity.incident !=null && endCity.incident != null" :stations="stations" color="primary"/>
           </v-row>
 
     </div>
@@ -102,9 +105,11 @@
 import DirectionsRenderer from "@/components/DirectionRenderer";
 import {gmapApi} from 'vue2-google-maps';
 import Score from "@/components/Score";
+import NotFound from "@/components/NotFound";
 
 export default {
   components: {
+    NotFound,
     DirectionsRenderer,
     Score,
   },
@@ -134,7 +139,7 @@ export default {
     triggerSearch: -1,
     stations: [],
     searchFail: false,
-
+    showMap: true
   }),
 
   computed: {
@@ -144,13 +149,24 @@ export default {
 
     searchFailTrigger(){
       this.searchFail = true;
+      this.showMap = false;
+      this.duration1Text = '';
+      this.duration2Text = '';
+
     },
 
     /*
        * changes value of triggerSearch, directions will bi rendered on change (buttonclick)
     */
     search(){
-      this.triggerSearch *= -1;
+      this.searchFail = false;
+      if (this.start === '' || this.end === '') {
+       this.searchFailTrigger()
+      }else {
+        this.showMap = true;
+        this.triggerSearch *= -1;
+      }
+
     },
     /*
       * corrects some wrong values given by google api

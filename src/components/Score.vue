@@ -1,5 +1,5 @@
 <template>
-  <v-btn dark color="red" x-large absolute bottom right>
+  <v-btn dark :color="color" x-large absolute bottom right>
     <h3>Score: {{ score }}</h3>
   </v-btn>
 </template>
@@ -9,6 +9,7 @@ export default {
   name: "Score",
   props: {
     stations: Array,
+    color: String
   },
   watch: {
     stations: function (newVal, oldVal) { // watch it
