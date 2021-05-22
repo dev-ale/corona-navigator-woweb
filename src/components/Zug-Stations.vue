@@ -45,6 +45,7 @@
               <v-list-item-title class="white--text">Stationen</v-list-item-title>
               <v-list-item-subtitle class="white--text">14 Tage Inzidenz</v-list-item-subtitle>
             </v-list-item>
+            <v-divider></v-divider>
             <v-list-item v-for="(station, index) of stations" :key="station.name" class="white--text">
               <v-list-item-avatar color="white">
                 {{ index + 1}}
@@ -56,7 +57,12 @@
                 <v-chip label v-if="!isNaN(station.incident)"color="red" dark>{{ Math.round(station.incident) }}</v-chip>
                 <v-chip label small v-if="isNaN(station.incident)" color="red" dark>{{ station.incident }}</v-chip>
               </v-list-item-subtitle>
+              <v-divider
+                  v-if="index"
+                  :key="index"
+              ></v-divider>
             </v-list-item>
+
           </v-list>
         </div>
       </v-col>

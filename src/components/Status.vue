@@ -32,10 +32,10 @@
                   <h3>{{ getCitiesForCanton(canton) }} ({{ getTotalCitiesForCanton(canton) }})</h3>
                 </v-list-item-title>
                 <v-list-item-subtitle>
-                  <v-chip dark color="primary">
+                  <v-chip dark color="statusMain">
                     {{ getIncidencesForCanton(canton) }}
                   </v-chip>
-                  <v-chip v-if="!$vuetify.breakpoint.mobile" class="ml-5" small outlined color="primary">
+                  <v-chip v-if="!$vuetify.breakpoint.mobile" class="ml-5" small outlined color="statusMain">
                     {{ getDateForCanton(canton) | moment("from", "now") }}
                   </v-chip>
                 </v-list-item-subtitle>
@@ -60,7 +60,7 @@
                 <v-col align="center">
                   <h4>14 Tage Inzindenz</h4>
                   <br>
-                  <v-chip large v-if="showDetails.incident" dark color="primary">{{showDetails.incident}}</v-chip>
+                  <v-chip large v-if="showDetails.incident" dark color="statusMain">{{showDetails.incident}}</v-chip>
                 </v-col>
               </v-row>
             </v-card>
