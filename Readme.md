@@ -6,6 +6,9 @@ Mit dem Backend sollen nun die anderen 11 Kantonsservices angefragt werden und d
 Am Ende der Arbeit ist ein Navigator entstanden, der für Zugstrecken die Inzidenz der jeweiligen Gemeinden der Zwischenstationen anzeigt. Die Navigation mit dem Auto, gibt jeweils die Inzidenz vom Start- und Endpunkt sowie einer Zwischenstation aus. Ausserdem haben wir eine Statusseite eingebaut, die die Inzidenz farblich auf einer Karte darstellt, sowie die Daten, die in der Datenbank gespeichert sind, anzeigt.
 Die fertige Lösung kann per folgender URL zugegriffen werden:
 
+<img src="https://github.com/dev-ale/corona-navigator-woweb/blob/master/images_repo/screenshot_train.jpg?raw=true" width="500" alt="screenshot_car">
+<img src="https://github.com/dev-ale/corona-navigator-woweb/blob/master/images_repo/screenshot_car.jpg?raw=true" width="500" alt="screenshot_car">
+<img src="https://github.com/dev-ale/corona-navigator-woweb/blob/master/images_repo/screenshot_status.jpg?raw=true" width="500" alt="screenshot_car">
 
 ## Live
 https://corona-navigator.herokuapp.com/
