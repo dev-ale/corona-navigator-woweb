@@ -1,5 +1,4 @@
 <template>
-  <v-card min-height="80vh">
   <v-container>
     <ZugInput v-if="!stations" @search="search"/>
     <v-col v-if="stations && !loading" align="center">
@@ -24,7 +23,6 @@
 
     <ProgressLoader v-if="loading"/>
   </v-container>
-  </v-card>
 </template>
 
 <script>

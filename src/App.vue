@@ -63,9 +63,8 @@
 
     <v-main :class="backgroundColor">
       <div class="ma-12" >
-        <v-card min-height="500px" height="100%">
+        <v-card min-height="80vh">
           <v-card-text>
-
             <ProgressLoader :info-text="'Fetching data from database'" v-if="loading"/>
             <div v-if="!loading">
               <Zug v-if="view==='zug'" :incidences="incidences"/>
