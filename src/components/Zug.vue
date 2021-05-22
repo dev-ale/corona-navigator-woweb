@@ -99,7 +99,6 @@ export default {
     /*
     * Open Transport API Call to get Train Stations between Start and Stop
     */
-    //Todo: @Pascal bitte noch Funktionsvariabeln ändern und Function beschriften
     search(from, to) {
       this.notFound = false
       this.loading = true
@@ -107,17 +106,14 @@ export default {
       this.stations = []
       axios.get(`https://transport.opendata.ch/v1/connections?from=${from}&to=${to}&limit=1`)
           .then(response => {
-            console.log(response)
-
             let sections = [];
             let stops = [];
             this.filteredCoordinates = [];
             this.stations = [];
             if (!from || !to) {
-              console.log("empty fields")
               this.notFound = true
               this.stations = []
-              this.message = 'Please enter a valid start and stop position'
+              this.message = 'Bitte geben Sie eine gültige Start und Endposition ein'
               this.loading = false
               this.stations = null
             }
@@ -125,7 +121,7 @@ export default {
             else if (response.data.connections.length === 0) {
               this.notFound = true
               this.stations = []
-              this.message = 'We could not find a route for your start and end position'
+              this.message = 'Wir konnten keine Route für diese Start und Endposition finden'
               this.loading = false
               this.stations = null
             } else {
@@ -140,7 +136,6 @@ export default {
               this.arrival.type = response.data.connections[0].products[lastEl];
 
               sections = response.data.connections[0].sections;
-              console.log(sections);
               let coordinates = sections.map(x => {
                 if (x.journey && x.journey.passList) {
                   return x.journey.passList.map(y => ({c: y.station.coordinate, ar: y.arrival, dep: y.departure}))
@@ -154,7 +149,6 @@ export default {
                   l.forEach(e => this.filteredCoordinates.push((e)))
                 }
               });
-              console.log(this.filteredCoordinates);
               this.filteredCoordinates = this.filteredCoordinates.filter(x => x.ar || x.dep)
                                                                   .map(x => x.c);
 
@@ -188,7 +182,7 @@ export default {
                       } else {
                         stops[index] = ({name: cityname, incident: "Keine Daten verfügbar"})
                         //logs all city which weren't found in our database
-                        console.log(cityname, canton)
+                        //console.log(cityname, canton)
                       }
                     }).catch(e => console.log(e))
                 )
@@ -214,7 +208,6 @@ export default {
           .catch(e => {
             console.log(e)
           })
-      console.log(this.stations);
     }
   }
 }

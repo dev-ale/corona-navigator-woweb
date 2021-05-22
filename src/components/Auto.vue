@@ -1,28 +1,7 @@
 <template>
   <v-container>
     <div>
-      <v-col align="center">
-        <v-row>
-          <v-col sm="3" xs="3" md="3" cols="12">
-            <v-text-field @keyup.enter="search" solo clearable v-model="start" placeholder="von"></v-text-field>
-          </v-col>
-
-          <v-col sm="3" xs="3" md="3" cols="12">
-            <v-text-field @keyup.enter="search" solo clearable v-model="stoppoint" placeholder="pause"></v-text-field>
-          </v-col>
-
-          <v-col sm="3" xs="3" md="3" cols="12">
-            <v-text-field @keyup.enter="search" solo clearable v-model="end" placeholder="bis"></v-text-field>
-          </v-col>
-
-          <v-col sm="3" xs="3" md="3" cols="12">
-            <v-btn @click="search" width="100%" outlined color="primary" dark x-large>Suchen</v-btn>
-          </v-col>
-        </v-row>
-        <v-row>
-
-        </v-row>
-      </v-col>
+      <AutoInput @search="search"/>
 
       <v-row v-if="!startCity.incident && !endCity.incident && !searchFail">
         <v-col align="center">
@@ -107,9 +86,11 @@ import DirectionsRenderer from "@/components/DirectionRenderer";
 import {gmapApi} from 'vue2-google-maps';
 import Score from "@/components/Score";
 import NotFound from "@/components/NotFound";
+import AutoInput from "@/components/Auto-Input";
 
 export default {
   components: {
+    AutoInput,
     NotFound,
     DirectionsRenderer,
     Score,
@@ -159,7 +140,11 @@ export default {
     /*
        * changes value of triggerSearch, directions will bi rendered on change (buttonclick)
     */
-    search(){
+    search(start, end, stoppoint){
+      this.start = start;
+      this.end = end;
+      this.stoppoint = stoppoint;
+
       this.searchFail = false;
       if (this.start === '' || this.end === '') {
        this.searchFailTrigger()
@@ -208,7 +193,6 @@ export default {
             } else {
               m = {name: cityname, incident: "Keine Daten verfügbar"}
               //logs all city which weren't found in our database
-              console.log(cityname, canton)
             }
             return m;
           }).catch(e => console.log(e));
