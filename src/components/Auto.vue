@@ -39,11 +39,12 @@
 
       <v-row>
         <v-col align="center">
-          <h4 v-if="duration1Text !== ''">{{ duration1Text }}</h4>
-          <h4 v-if="stoppoint !== ''">{{ duration2Text }}</h4>
+          <h3 v-if="duration1Text !== ''">{{ duration1Text }}</h3>
+          <h3 v-if="stoppoint !== ''">{{ duration2Text }}</h3>
         </v-col>
       </v-row>
       <GmapMap
+          class="mt-5"
           v-show="showMap"
           style="width: 100%; height: 500px"
           :zoom="8"

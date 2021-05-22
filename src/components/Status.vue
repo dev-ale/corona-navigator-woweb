@@ -179,7 +179,7 @@ export default {
     * correct it with + 0.3 because opacity would be to low
     */
     normalize(val, max, min) {
-      return (val - min) / (max - min) + 0.3;
+      return (val - min) / (max - min) + 0.4;
     },
 
     /*
