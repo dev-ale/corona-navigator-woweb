@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div>
-      <AutoInput @search="search"/>
+      <AutoInput @search="search" @triggerEasterEgg="triggerEasterEgg" :incidences="incidences"/>
 
       <v-row v-if="!startCity.incident && !endCity.incident && !searchFail">
         <v-col align="center">
@@ -15,11 +15,16 @@
         </v-col>
       </v-row>
 
+      <v-row v-if="showEasterEgg">
+        <v-col align="center">
+          <v-img src="https://media3.giphy.com/media/Y157H6oUhV4otwNYyM/giphy.gif?cid=790b76110e29f2eef14ae59540aa9c2575501847613f0ae9&rid=giphy.gif&ct=g" max-height="60vh"  contain="true"></v-img>
+        </v-col>
+      </v-row>
 
-      <v-row>
+      <v-row v-if="!showEasterEgg">
         <v-col align="center">
           <h3 v-if="duration1Text !== ''">{{ duration1Text }}</h3>
-          <h3 v-if="stoppoint !== ''">{{ duration2Text }}</h3>
+          <h3 v-if="stoptCity.address !== ''">{{ duration2Text }}</h3>
         </v-col>
       </v-row>
       <GmapMap
@@ -31,16 +36,15 @@
       >
         <DirectionsRenderer
             travelMode="DRIVING"
-            :origin="start"
-            :destination="end"
-            :location="stoppoint"
-            :count="triggerSearch"
+            :origin="origin"
+            :destination="destionation"
+            :location="pause"
             @getDirections="getDirections"
             @failure="searchFailTrigger"
 
         />
       </GmapMap>
-          <v-row v-if="startCity.incident !=null && endCity.incident != null && !searchFail">
+          <v-row v-if="startCity.incident !=null && endCity.incident != null && !searchFail && !showEasterEgg">
             <v-col xs="12" sm="12" md="4">
               <v-list dense>
                 <v-list-item>
@@ -100,35 +104,53 @@ export default {
   },
 
   data: () => ({
-    start: "",
-    end: "",
-    stoppoint: "",
     duration1Text: "",
     duration2Text: "",
     startCity: {
       name: "",
-      incident :null
+      canton: "",
+      incident :null,
+      address: "",
     },
     endCity: {
       name: "",
-      incident :null
+      canton: "",
+      incident :null,
+      address: "",
     },
     stoptCity: {
       name: "",
-      incident :null
+      canton: "",
+      incident :null,
+      address: "",
     },
     apikey: process.env.VUE_APP_GOOGLEMAPS_API_KEY,
     triggerSearch: -1,
     stations: [],
     searchFail: false,
-    showMap: true
+    showMap: true,
+    showEasterEgg: false,
   }),
 
   computed: {
     google: gmapApi,
+    origin() {
+      if (!this.startCity.address) return null;
+      return {query: this.startCity.address};
+    },
+    destionation() {
+      if (!this.endCity.address) return null;
+      return {query: this.endCity.address};
+    },
+    pause() {
+      if (!this.stoptCity.address) return null;
+      return {query: this.stoptCity.address};
+    },
   },
   methods: {
-
+    /*
+        * triggers failure messeage if google directions doesn't find any driections
+     */
     searchFailTrigger(){
       this.searchFail = true;
       this.showMap = false;
@@ -136,115 +158,49 @@ export default {
       this.duration2Text = '';
 
     },
+    /*
+      * triggers easterEgg and disables map
+    */
+    triggerEasterEgg(value){
+      if(value){
+        this.showMap = false;
+        this.showEasterEgg = true;
+      }else{
+        this.showMap = true;
+        this.showEasterEgg = false;
+      }
+    },
 
     /*
        * changes value of triggerSearch, directions will bi rendered on change (buttonclick)
     */
     search(start, end, stoppoint){
-      this.start = start;
-      this.end = end;
-      this.stoppoint = stoppoint;
+      this.startCity = start;
+      this.endCity = end;
+      this.stoptCity = stoppoint;
 
-      this.searchFail = false;
-      if (this.start === '' || this.end === '') {
+      /*this.searchFail = false;
+      if (this.startCity.address === '' || this.endCity.address === '') {
        this.searchFailTrigger()
       }else {
         this.showMap = true;
-        this.triggerSearch *= -1;
-      }
+        //this.triggerSearch *= -1;
+      }*/
 
     },
-    /*
-      * corrects some wrong values given by google api
-    */
-    correctCityName(city){
-      if (city.long_name.includes("Sankt")) {
-        return city.long_name.replace("Sankt", "St.")
-      }else if(city.long_name.includes("Biel")){
-        return city.long_name.concat("/Bienne")
-      }else if(city.long_name.includes("Kanton Reinach")){
-        return city.long_name.replace("Kanton ", "")
-      } else {return city.long_name;}
-    },
-    /*
-       * Calculate  Incident for specific lng and lat from city and return the incident value
-    */
-    async getIncidentsByCoordinates(lng, lat) {
-      return await axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key=" +this.apikey)
-          .then(response => {
-            //placeholder for cityname and canton
-            let m = {};
-            let cityname;
-            let canton;
-            //Set placeholder cityname and canton
-            response.data.results[0].address_components.forEach(x => {
-                  if (x.types.includes("locality")) {
-                    //correcting naming from Google api
-                    cityname = this.correctCityName(x);
-                  } else if (x.types.includes("administrative_area_level_1")) {
-                    canton = x.short_name;
-                  }
-                }
-            )
-            //search for City in our database and fils array with cityname and the corrisponding incident
-            const city = this.incidences.find(v => v.name === cityname && v.canton === canton);
-            if (city != undefined) {
-              m = {name: city.name, incident: Math.round(city.incident)}
-            } else {
-              m = {name: cityname, incident: "Keine Daten verfügbar"}
-              //logs all city which weren't found in our database
-            }
-            return m;
-          }).catch(e => console.log(e));
-    },
-
     /*
     * Get direction and display distance and duration in UI
     */
     getDirections (directions) {
       this.searchFail = false;
-      this.stoptCity = {
-        name: "",
-        incident :null
-      }
+
       this.stations = [];
-      let startLocation = {lat: null, lng: null};
-      let stopLocation = {lat: null, lng: null};
-      let endLocation= {lat: null, lng: null};
-
-
+      this.stations.push({name: this.startCity.name ,incident: this.startCity.incident});
+      this.stations.push({name: this.stoptCity.name ,incident: this.stoptCity.incident});
+      this.stations.push({name: this.endCity.name ,incident: this.endCity.incident});
 
       let obj1 = directions.routes[0].legs[0];
       let obj2 = directions.routes[0].legs[1];
-
-      startLocation.lat = obj1.start_location.lat();
-      startLocation.lng = obj1.start_location.lng();
-
-      if(obj2){
-        endLocation.lat = obj2.end_location.lat();
-        endLocation.lng = obj2.end_location.lng();
-
-        stopLocation.lat = obj2.start_location.lat();
-        stopLocation.lng = obj2.start_location.lng();
-
-        this.getIncidentsByCoordinates(stopLocation.lng, stopLocation.lat).then(m => {
-          this.stoptCity = m;
-          this.stations.push({name: m.name ,incident: m.incident});
-        })
-
-      }else{
-        endLocation.lat = directions.routes[0].legs[0].end_location.lat()
-        endLocation.lng = directions.routes[0].legs[0].end_location.lng()
-      }
-
-      this.getIncidentsByCoordinates(startLocation.lng, startLocation.lat).then(m => {
-        this.startCity = m;
-        this.stations.push({name: m.name ,incident: m.incident});
-      })
-      this.getIncidentsByCoordinates(endLocation.lng, endLocation.lat).then(m => {
-        this.endCity = m;
-        this.stations.push({name: m.name ,incident: m.incident});
-      })
 
 
       this.duration = directions.routes[0].legs[0].duration.text

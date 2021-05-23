@@ -21,9 +21,9 @@ export default MapElementFactory({
     },
 
     props: {
-        origin: { type: String },
-        destination: { type: String },
-        location: {type: String},
+        origin: { type: Object },
+        destination: { type: Object },
+        location: {type: Object},
         travelMode: { type: String },
         search: {type: Function},
         count: {type: Number}
@@ -32,11 +32,10 @@ export default MapElementFactory({
     afterCreate(directionsRenderer) {
         let directionsService = new window.google.maps.DirectionsService();
         this.$watch(
-            () => [this.count],
+            () => [this.origin, this.destination, this.travelMode, this.location],
             () => {
                 let { origin, destination, travelMode, location } = this;
                 if (!origin || !destination || !travelMode) return;
-
                 let request;
                 if(location){
                     request = {
