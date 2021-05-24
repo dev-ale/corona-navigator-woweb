@@ -1,6 +1,7 @@
 from app import mongo
 from datascrapper import get_incidences_from_canton_services, get_municipalities_from_canton_services
 import logging.config
+import re
 
 logging.config.fileConfig('logging.ini')
 logger = logging.getLogger('LOGGER')
@@ -17,7 +18,7 @@ def update_db():
         for incidence in canton:
             try:
                 if incidence['incidence'] is None: continue
-                mongo.db.incidences.update(
+                mongo.db.incidences.update_one(
                     {
                         'bfsNr': incidence['bfsNr'],
                     },
@@ -41,7 +42,7 @@ def update_db():
     for canton in municipalities.values():
         for municipality in canton:
             try:
-                mongo.db.incidences.update(
+                mongo.db.incidences.update_one(
                     {
                         'bfsNr': municipality['bfsNr'],
                     },
